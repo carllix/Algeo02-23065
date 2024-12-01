@@ -19,8 +19,52 @@
 ## Structure
 
 
-## How To Run
+## Installing/Getting Started
+1. **Clone this repository:**
+   ```bash
+   git clone https://github.com/carllix/Algeo02-23065.git
+   ```
+### Run Server
+1. **Navigate to the src/backend by running the following command in the terminal:**
+   ```bash
+   cd src/backend
+   ```
+2. **Create a virtual environment using the following command:**
+    ```bash
+   python -m venv .venv
+   ```
+3. **Activate the environment**
 
+    **For Windows:**
+    ```bash
+    .venv\Scripts\activate
+    ```
+   **For MacOS/Linux:**
+    ```bash
+    source .venv/bin/activate
+    ```
+4. **Install the required dependencies for the program by running:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+5. **Run server using the following command:**
+    ```bash
+   flask run --debug
+   ```
+### Run Client/Website
+1. **Navigate to the src/frontend by running the following command in the terminal:**
+   ```bash
+   cd src/frontend
+   ```
+2. **Install dependencies:**
+    ```bash
+   npm install
+   ```
+3. **Run the development server:**
+    ```bash
+   npm run dev
+   ```
+   You can access the website via `http://localhost:3000` in your web browser.
 
 ## Contributors
 
