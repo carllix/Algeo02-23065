@@ -3,7 +3,7 @@ import os
 from audioutils import FileUtils
 import json
 from audiotypes import Note, AudioFeatures, SearchResult
-from audioprocessing import AudioLoader, AudioNormalizer,ATBExtractor,FTBExtractor,RTBExtractor,SimilarityCalculator
+from audioprocessing import AudioLoader, AudioNormalizer,ATBExtractor,FTBExtractor,RTBExtractor,SimilarityCalculator, WavConverter
 import numpy as np
 
 class MusicRetriever:
@@ -26,8 +26,7 @@ class MusicRetriever:
 
 
    # FITUR WAJIB
-    def _extract_features(self, notes: List[Note]) -> AudioFeatures:
-        windows = self.normalizer.apply_windowing(notes)
+    def _extract_features(self, windows: List[List[Note]]) -> AudioFeatures:
         if not windows:
             return AudioFeatures(atb=[], rtb=[], ftb=[])
 
@@ -35,44 +34,50 @@ class MusicRetriever:
             AudioFeatures(
                 atb=self.atb_extractor.extract_atb(window),
                 rtb=self.rtb_extractor.extract_rtb(window),
-                ftb=self.ftb_extractor.extract_ftb(window)
+                ftb=self.ftb_extractor.extract_ftb(window)      
             ) for window in windows
         ]
         combined_atb = np.mean([f.atb for f in features_list], axis=0)
         combined_rtb = np.mean([f.rtb for f in features_list], axis=0)
         combined_ftb = np.mean([f.ftb for f in features_list], axis=0)
 
-        return AudioFeatures(
+        return AudioFeatures(       
             atb=combined_atb.tolist(),
             rtb=combined_rtb.tolist(),
             ftb=combined_ftb.tolist()
         )
 
-    def load_audio_files(self, audio_files: List[str]) -> List[str]:
+    def load_audio_files(self, root_dir :str) -> List[str]:
         """
-        I.S : List path file audio yang valid sudah terupload
+        I.S : List root dir valid
         F.S : File audio terproses dan tersimpan di dataset_features, 
-                mengembalikan list nama file yang berhasil diproses
+                mengembalikan list path file yang berhasil diproses
         """
         processed_files = []
-        for file_path in audio_files:
-            try:
-                notes = self.loader.load_midi_file(file_path)
-                if notes:  
-                    processed = self._extract_features(notes)
-                    self.dataset_features[os.path.basename(file_path)] = processed
-                    processed_files.append(file_path)
-            except Exception as e:
-                continue 
+        for file in os.listdir(root_dir):
+            if file.endswith('.mid'):
+                try:    
+                    file_path = os.path.join(root_dir, file)
+                    notes = self.loader.load_midi_file(file_path)
+                    if notes:  
+                        windows = self.normalizer.apply_windowing(notes, 40, 8) 
+                        features = self._extract_features(windows)
+                        self.dataset_features[file] = features
+                        processed_files.append(file_path)
+                except Exception as e:
+                    continue 
         return processed_files
-    def process_query_file(self, query_file: str) -> AudioFeatures:
+    
+    def process_query_file(self, root_dir : str, file_name : str) -> AudioFeatures:
         """
-        I.S : File query valid dan tersedia
+        I.S : root dir valid 
         F.S : Menghasilkan AudioFeatures dari file query
         """
+        file_path = os.path.join(root_dir, file_name)       
         try:
-            notes = self.loader.load_midi_file(query_file)
-            return self._extract_features(notes)
+            notes = self.loader.load_midi_file(file_path)       
+            windows = self.normalizer.apply_windowing(notes, 40, 8)
+            return self._extract_features(windows)
         except Exception as e:
             raise RuntimeError(f"Query processing failed: {str(e)}")    
 
@@ -116,29 +121,26 @@ class MusicRetriever:
         F.S : Menghasilkan AudioFeatures dari recording
         """
         try:
-            temp_file = "temp_recording.mid"
-            with open(temp_file, "wb") as f:
-                f.write(recording_data)
             
-            notes = self.loader.load_midi_file(temp_file)
-            features = self._extract_features(notes)
-            
-            os.remove(temp_file)
-            return features
+            notes = WavConverter.convert_to_midi_notes(recording_data)
+            return self._extract_features(notes)
         except Exception as e:
             raise RuntimeError(f"Recording processing failed: {str(e)}")
 
-    def load_compressed_dataset(self, compressed_file: str) -> List[str]:
+    def load_zipped_dataset(self, root_dir:str, compressed_folder_name: str) -> List[str]:
         """
         I.S : File ZIP valid dan tersedia  
         F.S : File terextract dan terproses, mengembalikan list file yang berhasil diproses
         """
-        temp_dir = "temp_dataset"
+        zip_path = os.path.join(root_dir, compressed_folder_name)
+        temp_dir = os.path.join(root_dir, "audio_extracted_temp")  
         os.makedirs(temp_dir, exist_ok=True)
-        
         try:
-            midi_files = FileUtils.extract_dataset_zip(compressed_file, temp_dir)
-            processed_files = self.load_audio_files(midi_files)
+            midi_files = FileUtils.extract_dataset_zip(zip_path, temp_dir)
+            
+            if not midi_files:
+                raise ValueError(f"Tidak ada file MIDI ditemukan dalam {compressed_folder_name}")
+            processed_files = self.load_audio_files(temp_dir)
             return processed_files
         finally:
             FileUtils.cleanup_temp_files(midi_files, temp_dir)
@@ -157,4 +159,3 @@ class MusicRetriever:
         except Exception as e:
             print(f"Failed to save mapping: {str(e)}")
             return False
-
