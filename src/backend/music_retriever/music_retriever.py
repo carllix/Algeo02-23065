@@ -3,7 +3,7 @@ import os
 from audioutils import FileUtils
 import json
 from audiotypes import Note, AudioFeatures, SearchResult
-from audioprocessing import AudioLoader, AudioNormalizer,ATBExtractor,FTBExtractor,RTBExtractor,SimilarityCalculator
+from audioprocessing import AudioLoader, AudioNormalizer,ATBExtractor,FTBExtractor,RTBExtractor,SimilarityCalculator, WavConverter
 import numpy as np
 
 class MusicRetriever:
@@ -116,15 +116,9 @@ class MusicRetriever:
         F.S : Menghasilkan AudioFeatures dari recording
         """
         try:
-            temp_file = "temp_recording.mid"
-            with open(temp_file, "wb") as f:
-                f.write(recording_data)
             
-            notes = self.loader.load_midi_file(temp_file)
-            features = self._extract_features(notes)
-            
-            os.remove(temp_file)
-            return features
+            notes = WavConverter.convert_to_midi_notes(recording_data)
+            return self._extract_features(notes)
         except Exception as e:
             raise RuntimeError(f"Recording processing failed: {str(e)}")
 
@@ -133,14 +127,14 @@ class MusicRetriever:
         I.S : File ZIP valid dan tersedia  
         F.S : File terextract dan terproses, mengembalikan list file yang berhasil diproses
         """
-        temp_dir = "temp_dataset"
+        temp_dir = "audios"
         os.makedirs(temp_dir, exist_ok=True)
         
         try:
             midi_files = FileUtils.extract_dataset_zip(compressed_file, temp_dir)
             processed_files = self.load_audio_files(midi_files)
             return processed_files
-        finally:
+        finally: 
             FileUtils.cleanup_temp_files(midi_files, temp_dir)
 
     def save_mapping(self, mapping_file: str) -> bool:
@@ -157,4 +151,3 @@ class MusicRetriever:
         except Exception as e:
             print(f"Failed to save mapping: {str(e)}")
             return False
-
