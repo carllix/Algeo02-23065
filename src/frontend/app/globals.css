@@ -1,3 +1,193 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0e1a30;
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.website-name {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+.sidebar {
+    width: 25%;
+    background-color: #1b2b4e;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  }
+
+.upload-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-preview {
+    width: 100%;
+    height: 80px;
+    background-color: #2d3d5b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+.upload-btn {
+    background-color: #526aa3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.menu {
+    margin-bottom: 20px;
+}
+
+.menu-btn {
+    background-color: #526aa3;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.files {
+    margin-top: auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+  }
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background-color: #2d3d5b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background-color: #526aa3;
+}
+
+.audio-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Selalu 4 kolom */
+    gap: 20px;
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+.audio-item {
+    background-color: #2d3d5b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 8px;
+    gap: 10px;
+    width: 100%; /* Ambil lebar penuh kolom */
+    max-width: 250px; /* Batas maksimum lebar elemen */
+    height: auto;
+    overflow: hidden;
+    margin: auto;
+}
+
+.album-image {
+    width: 100%; 
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    max-height: 120px; /* Tinggi gambar */
+}
+
+audio {
+    width: 100%; /* Lebar penuh elemen audio */
+}
+
+.album-image {
+    width: 100%; /* Ukuran proporsional terhadap kotak */
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    max-height: 120px; /* Batasi tinggi gambar */
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    margin-top: auto; /* Pastikan berada di bagian bawah sidebar */
+    color: white;
+}
+
+.nav-btn {
+    background-color: #526aa3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav-btn:disabled {
+    background-color: #2d3d5b;
+    cursor: not-allowed;
+}
+
+/* Microphone Button */
+.microphone-btn {
+    background-color: #526aa3;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .microphone-btn:hover {
+    background-color: #526aa3;
+  }
