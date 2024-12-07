@@ -27,13 +27,7 @@ class AudioUtils:
     def read_mapping_file(self, file_path: str) -> Dict:
         """
         I.S.: Path ke file mapping (.txt atau .json)
-        F.S.: Mengembalikan dictionary mapping:
-                {
-                "audio_file.mid": {
-                    "title": "Judul Lagu",
-                    "image": "album.png"
-                }
-                }
+        F.S.: Mengembalikan dictionary mapping
         """
         if file_path.endswith('.json'):
             with open(file_path) as f:
@@ -42,7 +36,7 @@ class AudioUtils:
     
 class FileUtils:
     @staticmethod
-    def extract_dataset_zip(zip_path: str, extract_path: str) -> List[str]:
+    def extract_dataset_zip( zip_path:str ,extract_path: str) -> List[str]:
         """
         I.S.: Path ke file zip dan path untuk extract
         F.S.: List path file MIDI yang diekstrak
@@ -50,7 +44,7 @@ class FileUtils:
         midi_files = []
         try:
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                zip_ref.extractall(extract_path)
+                zip_ref.extractall(extract_path) 
                 
                 for root, dirs, files in os.walk(extract_path):
                     for file in files:

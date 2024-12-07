@@ -6,9 +6,10 @@ import numpy as np
 import librosa
 
 class AudioLoader:
+    @staticmethod
     def load_midi_file(file_path: str) -> List[Note]:
         """
-        I.S.: File Path ada
+        I.S.: File Path valid 
         F.S.: Mengembalikan list of Note 
         """
         try:
@@ -52,7 +53,12 @@ class WavConverter:
         F.S.: List[Note] yang berisi pitch, duration, start_time
         """
         try:
-            audio_signal, sr = librosa.load(wav_data)
+            temp_file = "temp_recording.wav"
+            with open(temp_file, "wb") as f:
+                f.write(wav_data)
+
+            audio_signal, sr = librosa.load(temp_file)
+            os.remove(temp_file)
             pitches, magnitudes = librosa.piptrack(y=audio_signal, sr=sr)
             pitches_mean = np.mean(pitches, axis=0)
             midi_notes = librosa.hz_to_midi(pitches_mean)
