@@ -129,7 +129,7 @@ class MusicRetriever:
 
     def load_zipped_dataset(self, root_dir:str, compressed_folder_name: str) -> List[str]:
         """
-        I.S : File ZIP valid dan tersedia  
+        I.S : File ZIP valid dan tersedia di rootdir/compressed_folder_name.zip
         F.S : File terextract dan terproses, mengembalikan list file yang berhasil diproses
         """
         zip_path = os.path.join(root_dir, compressed_folder_name)
