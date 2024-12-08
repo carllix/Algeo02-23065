@@ -3,18 +3,22 @@ import React, { useState } from "react";
 
 const sharedData: Record<number, { audio: string; image: string }[]> = {
   1: [
-    { audio: "music1.mp3", image: "/assets/image/album1.jpeg" },
+    { audio: "music1.mid", image: "/assets/image/album1.jpeg" },
   ],
   2: [
-    { audio: "music5.mp3", image: "/assets/images/album5.jpg" },
+    { audio: "music5.mid", image: "/assets/images/album1.jpg" },
+  ],
+  3: [
+    { audio: "music6.mid", image: "/assets/images/album2.jpg" }, // Tambahan data
   ],
 };
 
-export default function Home() {
+export default function Page() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentMode, setCurrentMode] = useState<"Album" | "Music">("Album");
 
-  const maxPage = 2;
+  // Hitung jumlah halaman secara dinamis
+  const maxPage = Object.keys(sharedData).length;
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -38,7 +42,7 @@ export default function Home() {
             {currentMode === "Album" ? (
               <span>Pic_Name.png</span>
             ) : (
-              <span>Audio_Name.wav</span>
+              <span>Audio_Name.midi</span>
             )}
           </div>
           <button className="upload-btn">Upload</button>
@@ -99,7 +103,10 @@ export default function Home() {
                 alt="Album Cover"
                 className="album-image"
               />
-              <audio src={`/assets/audio/${item.audio}`} controls />
+              <audio controls>
+                <source src={`/assets/audio/${item.audio}`} type="audio/midi" />
+                Your browser does not support MIDI playback.
+              </audio>
             </div>
           ))}
         </div>

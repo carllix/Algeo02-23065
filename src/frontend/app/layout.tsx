@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import InteractiveLayout from "./interactiveLayout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,17 +19,11 @@ export const metadata: Metadata = {
   description: "Search and play your audio files easily.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <InteractiveLayout>{children}</InteractiveLayout>
       </body>
     </html>
   );
