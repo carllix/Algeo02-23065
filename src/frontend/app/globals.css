@@ -9,10 +9,11 @@ body {
 .container {
     display: flex;
     height: 100vh;
+    position: relative;
 }
 
 .website-name {
-    font-size: 24px;
+    font-size: 25px;
     font-weight: bold;
     text-align: center;
     color: #fff;
@@ -90,24 +91,46 @@ body {
     padding: 20px;
   }
 
-.tabs {
-    display: flex;
-    justify-content: space-around;
+  .tabs {
+    display: flex; /* Tata letak horizontal */
+    align-items: center; /* Ratakan secara vertikal */
+    justify-content: center; /* Pusatkan elemen secara horizontal */
+    gap: 20px; /* Jarak antar elemen */
     margin-bottom: 20px;
-}
-
-.tab-btn {
-    background-color: #2d3d5b;
+  }
+  
+  .search-bar {
+    display: flex;
+    flex-grow: 0; 
+    margin-right: auto;
+  }
+  
+  .search-bar input {
+    width: 260px; /* Lebar search bar */
+    height: 20px; /* Tinggi search bar */
+    padding: 5px; /* Padding di dalam search bar */
+    background-color: #374a6d;
+    color:  white;
+    font-size: 12px; /* Ukuran teks */
+    border: 1px solid #ccc; /* Batas search bar */
+    border-radius: 5px; /* Sudut membulat */
+    outline: none;
+  }
+  
+  
+  .tab-btn {
+    background-color:#2d3d5b;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
-}
-
-.tab-btn.active {
-    background-color: #526aa3;
-}
+  }
+  
+  .tab-btn.active {
+    background-color: #526aa3 ;
+  }
+  
 
 .audio-grid {
     display: grid;

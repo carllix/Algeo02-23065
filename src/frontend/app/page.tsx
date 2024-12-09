@@ -4,6 +4,10 @@ import React, { useState } from "react";
 const sharedData: Record<number, { audio: string; image: string }[]> = {
   1: [
     { audio: "music1.mid", image: "/assets/image/album1.jpeg" },
+    { audio: "music1.mid", image: "/assets/image/album1.jpeg" },
+    { audio: "music1.mid", image: "/assets/image/album1.jpeg" },
+    { audio: "music1.mid", image: "/assets/image/album1.jpeg" },
+    { audio: "music1.mid", image: "/assets/image/album1.jpeg" },
   ],
   2: [
     { audio: "music5.mid", image: "/assets/images/album1.jpg" },
@@ -82,6 +86,9 @@ export default function Page() {
       </div>
       <div className="main-content">
         <div className="tabs">
+        <div className="search-bar">
+            <input type="text" placeholder="Search..." />
+          </div>
           <button
             className={`tab-btn ${currentMode === "Album" ? "active" : ""}`}
             onClick={() => handleTabChange("Album")}
