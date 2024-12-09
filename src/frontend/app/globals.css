@@ -106,14 +106,14 @@ body {
   }
   
   .search-bar input {
-    width: 260px; /* Lebar search bar */
-    height: 20px; /* Tinggi search bar */
-    padding: 5px; /* Padding di dalam search bar */
+    width: 260px;
+    height: 20px;
+    padding: 5px;
     background-color: #374a6d;
     color:  white;
-    font-size: 12px; /* Ukuran teks */
-    border: 1px solid #ccc; /* Batas search bar */
-    border-radius: 5px; /* Sudut membulat */
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     outline: none;
   }
   
