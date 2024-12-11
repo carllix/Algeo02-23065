@@ -4,7 +4,7 @@ import numpy as np
 
 
 class AudioNormalizer:  
-    def normalize_tempo(self, notes: List[Note]) -> List[Note]:   #ini ga perlu ga sih
+    def normalize_tempo(self, notes: List[Note]) -> List[Note]:  
         """
         I.S.: List of notes (temponya yang mungkin bervariasi)  
         F.S.: List of notes telah di normalisasi (temponya)
@@ -46,24 +46,29 @@ class AudioNormalizer:
 
     def normalize_pitch(self, notes: List[Note]) -> List[Note]:
         """
-        I.S.: List of notes (pitch nya mungkin bervariasi)
-        F.S.: List of notes telah di stardisasi (pitchnya)
+        I.S.: List of notes (pitch belum dinormalisasi)
+        F.S.: List of notes dengan pitch yang sudah dinormalisasi sesuai formula NP(note) = (note-µ)/σ
         """
-        output = []
-        if notes:
-            pitches = [note.pitch for note in notes]
-            miu = sum(pitches)/len(pitches)  #rata-rata
-            std_pitches = (sum((p - miu) ** 2 for p in pitches) / len(pitches)) ** 0.5
-            if std_pitches  == 0 :
-                return notes
+        if not notes:
+            return []
             
-            output = []
-            for note in notes:
-                standardized_pitch = min(0,max(127,int((note.pitch - miu) / std_pitches)))
-                standardized_note = Note(
-                    pitch=standardized_pitch,
-                    duration=note.duration,
-                    start_time=note.start_time
-                )
-                output.append(standardized_note)
-        return output
+        pitches = [note.pitch for note in notes]
+        mean_pitch = sum(pitches) / len(pitches)
+        squared_diff_sum = sum((p - mean_pitch) ** 2 for p in pitches)
+        std_dev = (squared_diff_sum / len(pitches)) ** 0.5
+
+        if std_dev == 0:
+            return notes
+
+        normalized_notes = []
+        for note in notes:
+            normalized_pitch = int((note.pitch - mean_pitch) / std_dev)
+            normalized_pitch = max(0, min(127, normalized_pitch))
+            
+            normalized_notes.append(Note(
+                pitch=normalized_pitch,
+                duration=note.duration,
+                start_time=note.start_time
+            ))
+            
+        return normalized_notes

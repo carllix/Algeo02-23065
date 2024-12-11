@@ -29,6 +29,10 @@ class MusicRetriever:
         if not windows:
             return AudioFeatures(atb=[], rtb=[], ftb=[])
 
+        # print(f"\nWindows info:")
+        # print(f"Number of windows: {len(windows)}")
+        # print(f"Sample window sizes: {[len(w) for w in windows[:3]]}")
+        # print(f"Sample pitches from first window: {[n.pitch for n in windows[0][:5]]}")
         features_list = [
             AudioFeatures(
                 atb=self.atb_extractor.extract_atb(window),
@@ -40,35 +44,69 @@ class MusicRetriever:
         combined_rtb = np.mean([f.rtb for f in features_list], axis=0)
         combined_ftb = np.mean([f.ftb for f in features_list], axis=0)
 
+
+        print("\nFeature sample:")
+        print(f"ATB (first 5): {combined_atb[:20]}")
+        print(f"RTB (first 5): {combined_rtb[:20]}")
+        print(f"FTB (first 5): {combined_ftb[:20]}")
         return AudioFeatures(       
             atb=combined_atb.tolist(),
             rtb=combined_rtb.tolist(),
             ftb=combined_ftb.tolist()
         )
 
-    def load_audio_files(self, root_dir :str) -> List[str]:
-        """
-        I.S : List root dir valid
-        F.S : File audio terproses dan tersimpan di dataset_features, 
-                mengembalikan list path file yang berhasil diproses
-        """
+    # def load_audio_files(self, root_dir :str) -> List[str]:
+    #     """
+    #     I.S : List root dir valid
+    #     F.S : File audio terproses dan tersimpan di dataset_features, 
+    #             mengembalikan list path file yang berhasil diproses
+    #     """
+    #     processed_files = []
+    #     for file in os.listdir(root_dir):
+    #         if file.endswith('.mid'):
+    #             try:    
+    #                 file_path = os.path.join(root_dir, file)
+    #                 notes = self.loader.load_midi_file(file_path)
+    #                 if notes:  
+    #                     notes = self.normalizer.normalize_pitch(notes)
+    #                     notes = self.normalizer.normalize_tempo(notes)
+    #                     windows = self.normalizer.apply_windowing(notes, 40, 8) 
+    #                     features = self._extract_features(windows)
+    #                     self.dataset_features[file] = features
+    #                     processed_files.append(file_path)
+    #             except Exception as e:
+    #                 continue 
+    #     return processed_files
+    
+    def load_audio_files(self, root_dir: str) -> List[str]:
         processed_files = []
         for file in os.listdir(root_dir):
             if file.endswith('.mid'):
                 try:    
                     file_path = os.path.join(root_dir, file)
+                    # print(f"\nProcessing {file}:")
+
                     notes = self.loader.load_midi_file(file_path)
+                    # print(f"Raw notes: {len(notes)} notes")
+                    # print(f"Sample raw pitches: {[n.pitch for n in notes[:5]]}")
+                    
                     if notes:  
-                        notes = self.normalizer.normalize_pitch(notes)
-                        notes = self.normalizer.normalize_tempo(notes)
-                        windows = self.normalizer.apply_windowing(notes, 40, 8) 
+                        # notes = self.normalizer.normalize_pitch(notes)
+                        # print(f"After pitch norm: {[n.pitch for n in notes[:5]]}")
+                        
+                        # notes = self.normalizer.normalize_tempo(notes)
+                        # print(f"After tempo norm: {[n.pitch for n in notes[:5]]}")
+                        
+                        windows = self.normalizer.apply_windowing(notes, 20, 4)
+                        # print(f"Number of windows: {len(windows)}")
+                        
                         features = self._extract_features(windows)
                         self.dataset_features[file] = features
                         processed_files.append(file_path)
                 except Exception as e:
+                    print(f"Error processing {file}: {str(e)}")
                     continue 
         return processed_files
-    
     def process_query_file(self, root_dir : str, file_name : str) -> AudioFeatures:
         """
         I.S : root dir valid 
@@ -77,8 +115,8 @@ class MusicRetriever:
         file_path = os.path.join(root_dir, file_name)       
         try:
             notes = self.loader.load_midi_file(file_path)    
-            notes = self.normalizer.normalize_pitch(notes)
-            notes = self.normalizer.normalize_tempo(notes)   
+            # notes = self.normalizer.normalize_pitch(notes)
+            # notes = self.normalizer.normalize_tempo(notes)   
             windows = self.normalizer.apply_windowing(notes, 40, 8)
             return self._extract_features(windows)
         except Exception as e:

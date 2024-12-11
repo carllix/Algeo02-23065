@@ -9,24 +9,23 @@ class AudioLoader:
     @staticmethod
     def load_midi_file(file_path: str) -> List[Note]:
         """
-        Loads and extracts melody notes from a MIDI file
-        I.S.: Valid MIDI file path
+        I.S.: MIDI file path
         F.S.: Returns List[Note] containing melody track notes
         """
         try:
-            # Validate file
+            
             if not os.path.exists(file_path):
                 raise FileNotFoundError(f"File not found: {file_path}")
             if not file_path.endswith('.mid'):
                 raise ValueError("Invalid file format")
 
-            # Load MIDI data    
+         
             data = pretty_midi.PrettyMIDI(file_path)
             notes = []
 
 
             for instrument in data.instruments:
-                if instrument.program == 0:  # Melody track
+                if instrument.program == 0:  
                     for note in instrument.notes:
 
                         if (0 <= note.pitch <= 127 and 
@@ -88,14 +87,4 @@ class WavConverter:
             
         except Exception as e:
             raise RuntimeError(f"WAV conversion failed: {str(e)}")
-
-# file_path = "C:/Users/ASUS/Algeo02-23065/tests/anonim/test1.mid"
-# file_path = "C:/Users/ASUS/Algeo02-23065/doc/doc.txt"
-
-# print(AudioLoader.load_midi_file(file_path))
-
-
-# print("==============================================================")
-# midi_data = pretty_midi.PrettyMIDI(file_path)
-# print("test " , midi_data)
 
