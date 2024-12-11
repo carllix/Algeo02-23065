@@ -1,15 +1,14 @@
 from typing import List, Dict, Any
 import os
-from audioutils import FileUtils
-import json
-from audiotypes import Note, AudioFeatures, SearchResult
-from audioprocessing import AudioLoader, AudioNormalizer,ATBExtractor,FTBExtractor,RTBExtractor,SimilarityCalculator, WavConverter
+from .audiotypes import Note, AudioFeatures, SearchResult
+from .audioprocessing import AudioLoader, AudioNormalizer,ATBExtractor,FTBExtractor,RTBExtractor,SimilarityCalculator, WavConverter
+from .audioutils import FileUtils
 import numpy as np
 
 class MusicRetriever:
     def __init__(self):
         """
-        Inisialisasi melody matcher untuk pencarian lagu
+        Inisialisasi music retriever untuk pencarian lagu
         I.S : -
         F.S : Melody matcher terbentuk dengan dataset dan mapping kosong
         """
@@ -25,7 +24,7 @@ class MusicRetriever:
         self.similarity_calculator = SimilarityCalculator()
 
 
-   # FITUR WAJIB
+# FITUR WAJIB
     def _extract_features(self, windows: List[List[Note]]) -> AudioFeatures:
         if not windows:
             return AudioFeatures(atb=[], rtb=[], ftb=[])
@@ -60,6 +59,8 @@ class MusicRetriever:
                     file_path = os.path.join(root_dir, file)
                     notes = self.loader.load_midi_file(file_path)
                     if notes:  
+                        notes = self.normalizer.normalize_pitch(notes)
+                        notes = self.normalizer.normalize_tempo(notes)
                         windows = self.normalizer.apply_windowing(notes, 40, 8) 
                         features = self._extract_features(windows)
                         self.dataset_features[file] = features
@@ -75,7 +76,9 @@ class MusicRetriever:
         """
         file_path = os.path.join(root_dir, file_name)       
         try:
-            notes = self.loader.load_midi_file(file_path)       
+            notes = self.loader.load_midi_file(file_path)    
+            notes = self.normalizer.normalize_pitch(notes)
+            notes = self.normalizer.normalize_tempo(notes)   
             windows = self.normalizer.apply_windowing(notes, 40, 8)
             return self._extract_features(windows)
         except Exception as e:
@@ -145,17 +148,4 @@ class MusicRetriever:
         finally:
             FileUtils.cleanup_temp_files(midi_files, temp_dir)
 
-    def save_mapping(self, mapping_file: str) -> bool:
-        """
-        Save mapping audio-title-image ke file
-        I.S : File mapping valid dan tersedia
-        F.S : Mapping tersimpan, mengembalikan status keberhasilan
-        """
-        try:
-            if mapping_file.endswith('.json'):
-                with open(mapping_file, 'w') as f:
-                    json.dump(self.mapping, f, indent=4)
-            return True
-        except Exception as e:
-            print(f"Failed to save mapping: {str(e)}")
-            return False
+

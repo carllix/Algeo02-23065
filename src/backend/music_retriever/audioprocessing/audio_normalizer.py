@@ -1,5 +1,5 @@
 from typing import List
-from audiotypes import Note
+from ..audiotypes import Note
 import numpy as np
 
 
@@ -35,7 +35,7 @@ class AudioNormalizer:
         idx_window = 0
         
         while idx_window + window_size <= len(notes):
-            window = notes[idx_window:idx_window + window_size]
+            window = notes[idx_window:idx_window + window_size]         
             windows.append(window)
             idx_window += slide_size
             
@@ -52,14 +52,14 @@ class AudioNormalizer:
         output = []
         if notes:
             pitches = [note.pitch for note in notes]
-            mean_pitches = sum(pitches)/len(pitches)
-            std_pitches = (sum((p - mean_pitches) ** 2 for p in pitches) / len(pitches)) ** 0.5
+            miu = sum(pitches)/len(pitches)  #rata-rata
+            std_pitches = (sum((p - miu) ** 2 for p in pitches) / len(pitches)) ** 0.5
             if std_pitches  == 0 :
                 return notes
             
             output = []
             for note in notes:
-                standardized_pitch = min(0,max(127,int((note.pitch - mean_pitches) / std_pitches)))
+                standardized_pitch = min(0,max(127,int((note.pitch - miu) / std_pitches)))
                 standardized_note = Note(
                     pitch=standardized_pitch,
                     duration=note.duration,

@@ -1,6 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+src/backend/testingmusic.py
+src/.venv
 src/backend/.venv
 src/backend/__pycache__
 src/frontend/node_modules

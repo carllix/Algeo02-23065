@@ -1,6 +1,6 @@
 from typing import List, Dict
 import numpy as np
-from audiotypes import SearchResult, AudioFeatures
+from ..audiotypes import SearchResult, AudioFeatures
 
 class SimilarityCalculator:
     def cosine_similarity(self,v1: List[float], v2: List[float]) -> float:

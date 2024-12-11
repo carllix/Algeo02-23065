@@ -1,7 +1,7 @@
 from typing import List
 import numpy as np
-from audiotypes import Note
-from audioutils import AudioUtils
+from ..audiotypes import Note
+from ..audioutils import AudioUtils
 
 class ATBExtractor:
     def extract_atb(self,notes: List[Note]) -> List[float]:

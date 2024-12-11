@@ -1,6 +1,6 @@
 import pretty_midi
 from typing import List
-from audiotypes import Note
+from ..audiotypes import Note
 import os
 import numpy as np
 import librosa
@@ -9,41 +9,46 @@ class AudioLoader:
     @staticmethod
     def load_midi_file(file_path: str) -> List[Note]:
         """
-        I.S.: File Path valid 
-        F.S.: Mengembalikan list of Note 
+        Loads and extracts melody notes from a MIDI file
+        I.S.: Valid MIDI file path
+        F.S.: Returns List[Note] containing melody track notes
         """
         try:
+            # Validate file
             if not os.path.exists(file_path):
                 raise FileNotFoundError(f"File not found: {file_path}")
-                
             if not file_path.endswith('.mid'):
-                raise ValueError(f"Invalid file format")
-            data = pretty_midi.PrettyMIDI(file_path)                
+                raise ValueError("Invalid file format")
+
+            # Load MIDI data    
+            data = pretty_midi.PrettyMIDI(file_path)
             notes = []
+
+
             for instrument in data.instruments:
-                for note in instrument.notes:
-                    if not (0 <= note.pitch <= 127):
-                        continue                       
-                    if note.start < 0 or note.end < note.start:
-                        continue                        
-                    notes.append(Note(
-                        pitch=note.pitch,
-                        duration=note.end - note.start,
-                        start_time=note.start
-                    ))
-            if not notes: # kosong 
-                raise ValueError("No valid notes found in MIDI file")
-            return notes  
+                if instrument.program == 0:  # Melody track
+                    for note in instrument.notes:
+
+                        if (0 <= note.pitch <= 127 and 
+                            note.start >= 0 and 
+                            note.end > note.start):
+                                
+                            notes.append(Note(
+                                pitch=note.pitch,
+                                duration=note.end - note.start,
+                                start_time=note.start
+                            ))
+                    break  
+
+            if not notes:
+                raise ValueError("No valid notes found in melody track")
+
+            return notes
 
         except (FileNotFoundError, ValueError) as e:
             raise e
         except Exception as e:
             raise RuntimeError(f"Error loading MIDI file: {str(e)}")
-
-
-
-
-
 
 class WavConverter:
     @staticmethod
