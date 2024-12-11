@@ -8,10 +8,6 @@ class SimilarityCalculator:
         I.S.: Dua vektor fitur yang akan dibandingkan
         F.S.: Mengembalikan nilai similarity (0-1) antara kedua vektor
         """
-        # dot_product = sum(x*y for x,y in zip(v1,v2))
-        # norm1 = sum(x*x for x in v1) ** 0.5
-        # norm2 = sum(x*x for x in v2) ** 0.5
-        # return dot_product / (norm1 * norm2) if norm1 * norm2 else 0
         norm1 = np.linalg.norm(v1)
         norm2 = np.linalg.norm(v2)
         if norm1 == 0 or norm2 == 0:
