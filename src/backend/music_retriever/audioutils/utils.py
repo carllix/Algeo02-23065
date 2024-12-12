@@ -4,18 +4,7 @@ import json
 import zipfile
 
 
-class AudioUtils:
-    @staticmethod
-    def normalize_histogram(histogram: List[float]) -> List[float]:
-        """
-        I.S.: Histogram belum dinormalisasi
-        F.S.: Histogram yang sudah dinormalisasi (sum = 1)
-        """
-        total = sum(histogram)
-        return [count/total for count in histogram] if total else histogram
-
-
-    
+class AudioUtils:    
     @staticmethod
     def load_mapping(self, mapping_file: str) -> Dict:
         """

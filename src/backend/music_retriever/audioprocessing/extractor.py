@@ -15,7 +15,10 @@ class ATBExtractor:
     #     histogram = np.bincount(pitches, minlength=128)
     #     return histogram / np.sum(histogram) if np.sum(histogram) > 0 else histogram
     def extract_atb(self, notes: List[Note]) -> List[float]:
-        """Trace ATB extraction process"""
+        """
+        I.S.: List notes yang akan diekstrak fitur ATB-nya
+        F.S.: Mengembalikan fitur ATB dari notes dalam bentuk vektor 128 dimensi
+        """
         if not notes:
             return np.zeros(128)
             

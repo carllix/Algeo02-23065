@@ -45,10 +45,10 @@ class MusicRetriever:
         combined_ftb = np.mean([f.ftb for f in features_list], axis=0)
 
 
-        print("\nFeature sample:")
-        print(f"ATB (first 5): {combined_atb[:20]}")
-        print(f"RTB (first 5): {combined_rtb[:20]}")
-        print(f"FTB (first 5): {combined_ftb[:20]}")
+        # print("\nFeature sample:")
+        # print(f"ATB (first 5): {combined_atb[:20]}")
+        # print(f"RTB (first 5): {combined_rtb[:20]}")
+        # print(f"FTB (first 5): {combined_ftb[:20]}")
         return AudioFeatures(       
             atb=combined_atb.tolist(),
             rtb=combined_rtb.tolist(),
