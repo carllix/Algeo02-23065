@@ -1,38 +1,27 @@
 from typing import List, Dict
 import os
-import time
 import json
 import zipfile
 
 
-class AudioUtils:
+class AudioUtils:    
     @staticmethod
-    def normalize_histogram(histogram: List[float]) -> List[float]:
-        """
-        I.S.: Histogram belum dinormalisasi
-        F.S.: Histogram yang sudah dinormalisasi (sum = 1)
-        """
-        total = sum(histogram)
-        return [count/total for count in histogram] if total else histogram
-
-    @staticmethod
-    def get_execution_time(self, start_time: float) -> float:
-        """
-        I.S.: start_time dalam timestamp
-        F.S.: Mengembalikan durasi eksekusi dalam ms
-        """
-        return (time.time() - start_time) * 1000  
-    
-    @staticmethod
-    def read_mapping_file(self, file_path: str) -> Dict:
+    def load_mapping(self, mapping_file: str) -> Dict:
         """
         I.S.: Path ke file mapping (.txt atau .json)
         F.S.: Mengembalikan dictionary mapping
         """
-        if file_path.endswith('.json'):
-            with open(file_path) as f:
-                return json.load(f)
-        return {}
+        if mapping_file.endswith('.json'):
+            with open(mapping_file) as f:
+                self.mapping = json.load(f)
+        elif mapping_file.endswith('.txt'):
+            with open(mapping_file) as f:
+                for line in f:
+                    audio_file, title, pic_name = line.strip().split()
+                    self.mapping[audio_file] = {
+                        "title": title,
+                        "pic_name": pic_name
+                    }
     
 class FileUtils:
     @staticmethod
@@ -56,7 +45,7 @@ class FileUtils:
             raise RuntimeError(f"Failed to extract zip: {str(e)}")
 
     @staticmethod
-    def cleanup_temp_files(files: List[str], temp_dir: str):
+    def delete_temp(files: List[str], temp_dir: str):
         """
         I.S.: List file dan directory yang akan dihapus
         F.S.: File dan directory temporary dibersihkan

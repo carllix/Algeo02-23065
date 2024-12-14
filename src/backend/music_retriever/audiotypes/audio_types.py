@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from typing import List, Dict, Optional
+from typing import List, Optional
 
 @dataclass
 class Note:
     """Note MIDI"""
-    pitch: int       # (0-127)
-    duration: float  #  dalam beats
+    pitch: int
+    duration: float  
     start_time: float  
 
 @dataclass
