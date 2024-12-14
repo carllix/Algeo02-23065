@@ -150,15 +150,16 @@ body {
     flex-direction: column;
     align-items: center; /* Center align gambar dan tombol */
     justify-content: space-between;
-    padding: 10px;
+    padding: 15px; /* Tambah padding agar konten tidak terlalu padat */
     border-radius: 8px;
     gap: 10px;
     max-width: 250px;
-    height: 220px; /* Tinggi tetap untuk mencegah elemen terdorong */
+    height: 300px; /* Perbesar tinggi kontainer */
     width: 100%;
     overflow: hidden;
     color: #1C1C1C; /* Deep Black */
 }
+
 
 .album-image {
     width: 100%;
@@ -220,3 +221,63 @@ audio {
 .microphone-btn:hover {
     background-color: #eabe58;
 }
+
+.midi-controls {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .playback-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .play-btn {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .prev-btn,
+    .next-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    }
+    .progress-bar {
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        background: #ccc; /* Warna background lebih gelap */
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 10px 0; /* Memberikan ruang antar elemen */
+    }
+    
+    .progress-bar::-webkit-slider-thumb {
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        background: #88C057; /* Warna lebih kontras */
+        border: 2px solid #1C1C1C; /* Memberikan border untuk visibilitas */
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    
+  
+  .time-display {
+    display: flex;
+    justify-content: space-between;
+  }
+  
