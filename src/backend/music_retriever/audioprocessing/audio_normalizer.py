@@ -49,29 +49,23 @@ class AudioNormalizer:
         except Exception as e:
             print(f"Error di normalisasi tempo: {e}")
             return notes
-        
     # def normalize_pitch(self, notes: List[Note]) -> List[Note]:
-        if not notes:
-            return []
-
-    
-        pitches = np.array([note.pitch for note in notes])
-   
-        mean_pitch = np.mean(pitches)
-        std_pitch = np.std(pitches)
+    #     if not notes:
+    #         return []
         
-        normalized_pitches = (pitches - mean_pitch) / std_pitch if std_pitch != 0 else pitches
-
-
-        normalized_pitches = np.clip(normalized_pitches, 0, 127)
-
-        normalized_notes = [
-            Note(
-                pitch=int(np.round(normalized_pitch)),  
-                duration=note.duration,
-                start_time=note.start_time
-            ) 
-            for note, normalized_pitch in zip(notes, normalized_pitches)
-        ]
+    #     pitches = [note.pitch for note in notes]
+    #     mean = np.mean(pitches)
+    #     std = np.std(pitches)
         
-        return normalized_notes
+    #     if std == 0:
+    #         std = 1  
+        
+    #     normalized_notes = [
+    #         Note(
+    #             pitch=int((note.pitch - mean) / std),
+    #             duration=note.duration,
+    #             start_time=note.start_time
+    #         ) for note in notes
+    #     ]
+        
+    #     return normalized_notes
