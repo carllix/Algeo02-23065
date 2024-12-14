@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as Tone from "tone";
 import { Midi } from "@tonejs/midi";
 
@@ -13,18 +13,39 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
   const [synths, setSynths] = useState<Tone.PolySynth[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isSeeking, setIsSeeking] = useState(false);
 
-  let timer: NodeJS.Timeout | null = null;
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       synths.forEach((synth) => synth.dispose());
-      clearInterval(timer);
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [synths]);
+
+  // Effect to update progress bar when playing
+  useEffect(() => {
+    if (isPlaying) {
+      timerRef.current = setInterval(() => {
+        setCurrentTime((prev) => {
+          if (prev < duration) {
+            return prev + 1;
+          } else {
+            clearInterval(timerRef.current!);
+            setIsPlaying(false);
+            return prev;
+          }
+        });
+      }, 1000);
+    } else if (!isPlaying && timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isPlaying, duration]);
 
   const handlePlayPause = async (): Promise<void> => {
     try {
@@ -33,6 +54,8 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
 
       if (!isPlaying) {
         await Tone.start();
+
+        const now = Tone.now();
 
         if (synths.length === 0) {
           const response = await fetch(audioUrl);
@@ -53,8 +76,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
           );
           setDuration(totalDuration);
 
-          Tone.Transport.stop();
-          Tone.Transport.cancel();
+          const newSynths: Tone.PolySynth[] = [];
 
           midi.tracks.forEach((track) => {
             const synth = new Tone.PolySynth(Tone.Synth, {
@@ -66,33 +88,28 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
               },
             }).toDestination();
 
-            setSynths((prevSynths) => [...prevSynths, synth]);
+            newSynths.push(synth);
 
             track.notes.forEach((note) => {
-              Tone.Transport.schedule((time) => {
+              if (note.time >= currentTime) {
                 synth.triggerAttackRelease(
                   note.name,
                   note.duration,
-                  time,
+                  note.time + now - currentTime,
                   note.velocity
                 );
-              }, note.time);
+              }
             });
           });
+
+          setSynths(newSynths);
         }
 
-        Tone.Transport.start("+0.1");
         setIsPlaying(true);
-
-        timer = setInterval(() => {
-          if (!isSeeking) {
-            setCurrentTime(Tone.Transport.seconds);
-          }
-        }, 500);
       } else {
-        Tone.Transport.pause();
+        synths.forEach((synth) => synth.disconnect());
+        setSynths([]);
         setIsPlaying(false);
-        if (timer) clearInterval(timer);
       }
     } catch (error) {
       console.error("Error in playback:", error);
@@ -102,11 +119,18 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
     }
   };
 
-  const handleSeek = (time: number) => {
-    setIsSeeking(true);
-    setCurrentTime(time);
-    Tone.Transport.seconds = time;
-    setTimeout(() => setIsSeeking(false), 100);
+  const handlePrev = () => {
+    setCurrentTime(0);
+    if (isPlaying) {
+      handlePlayPause(); // Restart playback
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentTime((prev) => Math.min(prev + 20, duration));
+    if (isPlaying) {
+      handlePlayPause(); // Restart playback
+    }
   };
 
   const formatTime = (seconds: number): string => {
@@ -122,7 +146,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
         min="0"
         max={duration}
         value={currentTime}
-        onChange={(e) => handleSeek(Number(e.target.value))}
+        onChange={(e) => setCurrentTime(Number(e.target.value))}
         className="progress-bar w-full"
         style={{ height: "5px", background: "#ddd", borderRadius: "5px", marginBottom: "10px" }}
       />
@@ -132,7 +156,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
       </div>
       <div className="playback-control flex items-center justify-center space-x-2">
         <button
-          onClick={() => handleSeek(0)}
+          onClick={handlePrev}
           className="prev-btn text-gray-700"
           style={{ border: "none", background: "none", fontSize: "1.5rem" }}
         >
@@ -147,7 +171,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
           {isLoading ? "..." : isPlaying ? "⏸" : "▶"}
         </button>
         <button
-          onClick={() => handleSeek(duration)}
+          onClick= {handleNext}
           className="next-btn text-gray-700"
           style={{ border: "none", background: "none", fontSize: "1.5rem" }}
         >
