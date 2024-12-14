@@ -135,7 +135,7 @@ body {
 
 .audio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Ukuran minimum 220px */
     gap: 20px;
     padding: 0px;
     max-height: 70vh;
@@ -143,17 +143,18 @@ body {
     justify-content: start;
 }
 
+/* Kontainer Audio Item */
 .audio-item {
     background-color: #F4F1DE; /* Soft Gray */
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center; /* Center align gambar dan tombol */
     justify-content: space-between;
     padding: 10px;
     border-radius: 8px;
     gap: 10px;
     max-width: 250px;
-    max-height: 200px;
+    height: 220px; /* Tinggi tetap untuk mencegah elemen terdorong */
     width: 100%;
     overflow: hidden;
     color: #1C1C1C; /* Deep Black */
@@ -161,10 +162,9 @@ body {
 
 .album-image {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    height: 120px; /* Tinggi tetap untuk gambar */
+    object-fit: contain; /* Memastikan gambar tidak terpotong */
     border-radius: 8px;
-    max-height: 120px;
 }
 
 audio {

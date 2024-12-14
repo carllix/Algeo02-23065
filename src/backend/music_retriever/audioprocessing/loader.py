@@ -1,7 +1,7 @@
 from typing import List
 from ..audiotypes import Note
 import os
-# import numpy as np
+import mido
 import pretty_midi
 
 
@@ -44,3 +44,4 @@ class AudioLoader:
             return notes
         except Exception as e:
             raise RuntimeError(f"Error loading MIDI: {str(e)}")
+        
