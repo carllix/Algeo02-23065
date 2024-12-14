@@ -15,7 +15,6 @@ class AudioUtils:
             with open(mapping_file) as f:
                 self.mapping = json.load(f)
         elif mapping_file.endswith('.txt'):
-            # Handle txt format
             with open(mapping_file) as f:
                 for line in f:
                     audio_file, title, pic_name = line.strip().split()
@@ -46,7 +45,7 @@ class FileUtils:
             raise RuntimeError(f"Failed to extract zip: {str(e)}")
 
     @staticmethod
-    def cleanup_temp_files(files: List[str], temp_dir: str):
+    def delete_temp(files: List[str], temp_dir: str):
         """
         I.S.: List file dan directory yang akan dihapus
         F.S.: File dan directory temporary dibersihkan

@@ -4,7 +4,7 @@ from typing import List, Optional
 @dataclass
 class Note:
     """Note MIDI"""
-    pitch: int       
+    pitch: int
     duration: float  
     start_time: float  
 
