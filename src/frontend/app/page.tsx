@@ -234,7 +234,6 @@ export default function Page() {
           <p>Audios: {audioFileName}</p>
           <p>Pictures: {imageFileName}</p>
           <p>Mapper: {mapperFileName}</p>
-          <button className="menu-btn" onClick={handleFindSimilar}>Find simmilar images</button>
         </div>
         <div className="pagination">
           <button
@@ -259,7 +258,7 @@ export default function Page() {
       <div className="main-content">
         <div className="tabs">
           <div className="search-bar">
-            <input type="text" placeholder="Search..." />
+            <button className="tab-btn" onClick={handleFindSimilar}>Search</button>
           </div>
           <button
             className={`tab-btn ${currentMode === "Album" ? "active" : ""}`}
