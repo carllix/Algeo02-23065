@@ -52,7 +52,9 @@ def find_similar_images_endpoint():
     try:
         dataset_path = IMAGE_FOLDER
         query_folder = QUERY_IMAGE_FOLDER
+        mapper_folder = MAPPER_FOLDER
 
+        # Pastikan hanya ada satu gambar di query folder
         query_files = os.listdir(query_folder)
         if len(query_files) != 1:
             return (
@@ -64,6 +66,7 @@ def find_similar_images_endpoint():
 
         start_time = time.time()
 
+        # Temukan gambar yang mirip
         similar_images = find_similar_images(
             query_image_path=query_image_path,
             dataset_path=dataset_path,
@@ -72,21 +75,56 @@ def find_similar_images_endpoint():
             threshold=0,
         )
 
+        for image_name, similarity in similar_images:
+            print(f"{image_name}: {similarity:.2%}")
+
+        # Baca file mapper JSON
+        mapper_files = [f for f in os.listdir(mapper_folder) if f.endswith(".json")]
+        if not mapper_files:
+            return jsonify({"error": "No mapper file found"}), 400
+
+        mapper_path = os.path.join(mapper_folder, mapper_files[0])
+        with open(mapper_path, "r") as json_file:
+            mapper_data = json.load(json_file)
+
+        # Buat hasil yang sudah dimapping
+        mapped_results = []
+        for image_name, similarity in similar_images:
+            # Cari informasi audio di image_mapping
+            image_info = mapper_data["image_mapping"].get(image_name, {})
+
+            # Dapatkan daftar audio files
+            audio_files = image_info.get("audio_files", [])
+
+            # Tambahkan setiap audio file sebagai entri terpisah
+            for audio_file in audio_files:
+                audio_info = mapper_data["audio_mapping"].get(audio_file, {})
+                mapped_results.append(
+                    {
+                        "image_name": image_name,
+                        "similarity": similarity,
+                        "audio_file": audio_file,
+                        "song_title": audio_info.get("song_title", "Unknown"),
+                        "artist": audio_info.get("artist", "Unknown"),
+                        "album_name": audio_info.get("album_name", "Unknown"),
+                    }
+                )
+
         end_time = time.time()
         execution_time_ms = (end_time - start_time) * 1000
 
         return (
             jsonify(
                 {
-                    "similar_images": similar_images,
+                    "similar_images": mapped_results,
                     "execution_time_ms": execution_time_ms,
                 }
             ),
             200,
         )
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 def handle_upload(request, target_folder, file_type):
     """Fungsi untuk menangani upload file dan ekstraksi ZIP ke folder baru,
