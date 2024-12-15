@@ -192,7 +192,8 @@ def handle_upload(request, target_folder, file_type):
                 # Proses data JSON jika diperlukan
                 if 'audio_mapping' in data:
                     music_retriever.set_mapping(data['audio_mapping'])
-                    
+                    return jsonify(data['audio_mapping'])
+
 
         except json.JSONDecodeError:
             return jsonify({"error": "Invalid JSON format"}), 400

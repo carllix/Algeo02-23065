@@ -1,7 +1,6 @@
 from typing import List
 from ..audiotypes import Note
 import os
-import mido
 import pretty_midi
 
 

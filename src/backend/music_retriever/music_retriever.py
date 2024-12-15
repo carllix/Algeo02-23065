@@ -2,7 +2,6 @@ from typing import List, Dict, Any
 import os
 from .audiotypes import Note, AudioFeatures, SearchResult
 from .audioprocessing import AudioLoader, AudioNormalizer,Extractor,SimilarityCalculator
-from .audioutils import FileUtils
 import numpy as np
 
 class MusicRetriever:

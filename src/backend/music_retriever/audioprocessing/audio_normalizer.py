@@ -1,6 +1,6 @@
 from typing import List
 from ..audiotypes import Note
-import numpy as np
+# import numpy as np
 
 
 class AudioNormalizer:  

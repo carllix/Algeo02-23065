@@ -1,5 +1,5 @@
 from typing import List
-import numpy as np
+# import numpy as np
 from ..audiotypes import Note
 
 class Extractor:
