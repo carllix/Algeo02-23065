@@ -139,6 +139,18 @@ export default function Page() {
     }
   };
 
+  const handleFindSimilar = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/find_similar_images`, {
+        method: "POST",
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="container">
       <div className="sidebar">
@@ -222,6 +234,7 @@ export default function Page() {
           <p>Audios: {audioFileName}</p>
           <p>Pictures: {imageFileName}</p>
           <p>Mapper: {mapperFileName}</p>
+          <button className="menu-btn" onClick={handleFindSimilar}>Find simmilar images</button>
         </div>
         <div className="pagination">
           <button
