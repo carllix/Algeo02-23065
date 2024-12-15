@@ -4,11 +4,14 @@ import zipfile
 import os
 import json
 import shutil
+import time
+from album_finder.album_finder import find_similar_images
 
 app = Flask(__name__)
 
 # Mengonfigurasi CORS
-CORS(app, resources={r"/upload/*": {"origins": "http://localhost:3000"}})
+
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # Folder tujuan untuk setiap jenis dataset
 IMAGE_FOLDER = "../../test/images"
@@ -43,10 +46,51 @@ def upload_query_image():
 def upload_query_audio():
     return handle_upload(request, QUERY_AUDIO_FOLDER, "audio")
 
+
+@app.route("/find_similar_images", methods=["POST"])
+def find_similar_images_endpoint():
+    try:
+        dataset_path = IMAGE_FOLDER
+        query_folder = QUERY_IMAGE_FOLDER
+
+        query_files = os.listdir(query_folder)
+        if len(query_files) != 1:
+            return (
+                jsonify({"error": "Query folder must contain exactly one image"}),
+                400,
+            )
+
+        query_image_path = os.path.join(query_folder, query_files[0])
+
+        start_time = time.time()
+
+        similar_images = find_similar_images(
+            query_image_path=query_image_path,
+            dataset_path=dataset_path,
+            components_count=50,
+            max_results=None,
+            threshold=0,
+        )
+
+        end_time = time.time()
+        execution_time_ms = (end_time - start_time) * 1000
+
+        return (
+            jsonify(
+                {
+                    "similar_images": similar_images,
+                    "execution_time_ms": execution_time_ms,
+                }
+            ),
+            200,
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 def handle_upload(request, target_folder, file_type):
     """Fungsi untuk menangani upload file dan ekstraksi ZIP ke folder baru,
     atau menyimpan file JSON untuk mapper, dan file gambar/audio query."""
-
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
 
@@ -112,12 +156,24 @@ def handle_upload(request, target_folder, file_type):
     if file_type == "image" and file.filename.lower().endswith(
         (".jpg", ".jpeg", ".png")
     ):
+        # Hapus file lama di folder QUERY_IMAGE_FOLDER
+        for filename in os.listdir(target_folder):
+            file_path = os.path.join(target_folder, filename)
+            os.remove(file_path)
+
+        # Simpan file baru
         file_path = os.path.join(target_folder, file.filename)
         file.save(file_path)
         return jsonify({"message": f"Image saved to {file_path}"}), 200
 
     # Handle audio files (query audio)
     if file_type == "audio" and file.filename.lower().endswith(".mid"):
+        # Hapus file lama di folder QUERY_AUDIO_FOLDER
+        for filename in os.listdir(target_folder):
+            file_path = os.path.join(target_folder, filename)
+            os.remove(file_path)
+
+        # Simpan file baru
         file_path = os.path.join(target_folder, file.filename)
         file.save(file_path)
         return jsonify({"message": f"Audio saved to {file_path}"}), 200
