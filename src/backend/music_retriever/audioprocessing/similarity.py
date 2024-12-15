@@ -19,7 +19,7 @@ class SimilarityCalculator:
         I.S.: Features query dan dataset yang akan dibandingkan
         F.S.: Mengembalikan nilai similarity dengan bobot untuk tiap fitur
         """ 
-        weights = {'atb': 0.3, 'rtb': 0.4, 'ftb': 0.3} 
+        weights = {'atb': 0.30, 'rtb': 0.40, 'ftb': 0.30} 
         atb_sim = self.cosine_similarity(query.atb, dataset.atb)
         rtb_sim = self.cosine_similarity(query.rtb, dataset.rtb)
         ftb_sim = self.cosine_similarity(query.ftb, dataset.ftb)
