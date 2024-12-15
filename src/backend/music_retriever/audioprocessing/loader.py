@@ -25,23 +25,26 @@ class AudioLoader:
     def load_midi_file(file_path: str) -> List[Note]:
         try:
             data = pretty_midi.PrettyMIDI(file_path)
-            notes = []
+            melody_notes = []  
             for instrument in data.instruments:
-                if instrument.program == 0:  
-                    for note in instrument.notes:
-                        if (0 <= note.pitch <= 127 and 
-                            note.start >= 0 and 
-                            note.end > note.start):
-                                
-                            notes.append(Note(
-                                pitch=note.pitch,
-                                duration=note.end - note.start,
-                                start_time=note.start
-                            ))
-                    break
-            if not notes:
-                raise ValueError("No valid notes found in melody track")
-            return notes
+                if instrument.is_drum:
+                    continue  
+                
+                for note in instrument.notes:
+                    if 0 <= note.pitch <= 127 and note.start >= 0 and note.end > note.start:
+                        melody_notes.append(Note(
+                            pitch=note.pitch,
+                            duration=note.end - note.start,
+                            start_time=note.start
+                        ))
+            
+            if melody_notes:
+                melody_notes.sort(key=lambda x: x.start_time)
+                return melody_notes
+            
+            else:
+                raise ValueError("No valid melody notes found.")
+        
         except Exception as e:
             raise RuntimeError(f"Error loading MIDI: {str(e)}")
         
