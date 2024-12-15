@@ -15,12 +15,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 music_retriever = MusicRetriever()  
 
-IMAGE_FOLDER = "../../test/images"
-AUDIO_FOLDER = "../../test/audio"
-MAPPER_FOLDER = "../../test/mapper"
-QUERY_IMAGE_FOLDER = "../../test/query_image"
-QUERY_AUDIO_FOLDER = "../../test/query_audio"
-# Folder tujuan untuk setiap jenis dataset
 IMAGE_FOLDER = "../frontend/public/test/images"
 AUDIO_FOLDER = "../frontend/public/test/audio"
 MAPPER_FOLDER = "../frontend/public/test/mapper"
@@ -63,7 +57,7 @@ def find_similar_audios_endpoint():
         query_files = os.listdir(query_folder)
         if len(query_files) != 1:
             return (
-                jsonify({"error": "Query folder must contain exactly one image"}),
+                jsonify({"error": "Query folder must contain exactly one audio"}),
                 400,
             )
         start_time = time.time()
@@ -229,6 +223,7 @@ def handle_upload(request, target_folder, file_type):
         # Simpan file baru
         file_path = os.path.join(target_folder, file.filename)
         file.save(file_path)
+        test = music_retriever.load_audio_files(AUDIO_FOLDER)
         return jsonify({"message": f"Audio saved to {file_path}"}), 200
 
     return (

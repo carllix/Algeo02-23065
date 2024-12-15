@@ -153,7 +153,7 @@ export default function Page() {
   const handleFindSimilar = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/find_similar_images`,
+        `http://localhost:5000/find_similar_audios`,
         {
           method: "POST",
         }

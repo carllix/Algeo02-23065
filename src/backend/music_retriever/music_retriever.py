@@ -40,7 +40,7 @@ class MusicRetriever:
         if audio_name in self.mapping:
             return {
                 "song_title": self.mapping[audio_name].get("song_title", "Unknown"),
-                "album_image": self.mapping[audio_name].get("album_image", "default.jpg"),
+                "album_image": self.mapping[audio_name].get("album_image", "default.jpeg"),
                 "album_title": self.mapping[audio_name].get("album_title", "Unknown")
             }
         return {
@@ -101,4 +101,5 @@ class MusicRetriever:
                     "album_title": info["album_title"]  
                 }
             output = self.similarity_calculator.rank_results(similarities)
+            print(output)
         return output
