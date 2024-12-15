@@ -36,13 +36,7 @@ class SimilarityCalculator:
                 audio_name=audio_name,
                 similarity=info["similarity"],
                 song_title=info["song_title"],
-                album_image=info["album_image"],
-                album_title=info["album_title"]
+                image_name=info["image_name"],
+                album_name=info["album_name"]
             ))
         return sorted(output, key=lambda x: x.similarity, reverse=True)
-
-        # output = [
-        #     SearchResult(audio_name=audio_name, **info)
-        #     for audio_name, info in similarities.items()
-        # ]
-        # return sorted(output, key=lambda x: x.similarity, reverse=True)

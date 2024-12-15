@@ -1,322 +1,321 @@
 {
-    "audio_mapping": {
-      "x (1).mid": {
-        "title": "Song 1",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (2).mid": {
-        "title": "Song 2",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (3).mid": {
-        "title": "Song 3",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (4).mid": {
-        "title": "Song 4",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (5).mid": {
-        "title": "Song 5",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (6).mid": {
-        "title": "Song 6",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (7).mid": {
-        "title": "Song 7",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (8).mid": {
-        "title": "Song 8",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (9).mid": {
-        "title": "Song 9",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (10).mid": {
-        "title": "Song 10",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (11).mid": {
-        "title": "Song 11",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (12).mid": {
-        "title": "Song 12",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (13).mid": {
-        "title": "Song 13",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (14).mid": {
-        "title": "Song 14",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (15).mid": {
-        "title": "Song 15",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (16).mid": {
-        "title": "Song 16",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (17).mid": {
-        "title": "Song 17",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (18).mid": {
-        "title": "Song 18",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (19).mid": {
-        "title": "Song 19",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (20).mid": {
-        "title": "Song 20",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (21).mid": {
-        "title": "Song 21",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (22).mid": {
-        "title": "Song 22",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (23).mid": {
-        "title": "Song 23",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (24).mid": {
-        "title": "Song 24",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (25).mid": {
-        "title": "Song 25",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (26).mid": {
-        "title": "Song 26",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (27).mid": {
-        "title": "Song 27",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (28).mid": {
-        "title": "Song 28",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (29).mid": {
-        "title": "Song 29",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (30).mid": {
-        "title": "Song 30",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (31).mid": {
-        "title": "Song 31",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (32).mid": {
-        "title": "Song 32",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (33).mid": {
-        "title": "Song 33",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (34).mid": {
-        "title": "Song 34",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (35).mid": {
-        "title": "Song 35",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (36).mid": {
-        "title": "Song 36",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (37).mid": {
-        "title": "Song 37",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (38).mid": {
-        "title": "Song 38",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (39).mid": {
-        "title": "Song 39",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (40).mid": {
-        "title": "Song 40",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (41).mid": {
-        "title": "Song 41",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (42).mid": {
-        "title": "Song 42",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (43).mid": {
-        "title": "Song 43",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (44).mid": {
-        "title": "Song 44",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (45).mid": {
-        "title": "Song 45",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (46).mid": {
-        "title": "Song 46",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (47).mid": {
-        "title": "Song 47",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (48).mid": {
-        "title": "Song 48",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (49).mid": {
-        "title": "Song 49",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      },
-      "x (50).mid": {
-        "title": "Song 50",
-        "album_": "default.jpg", 
-        "artist": "Artist 1",
-        "album": "Album One"
-      }
+  "audio_mapping": {
+    "x (1).mid": {
+      "song_title": "Song 1",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
     },
-    "image_mapping": {
-      "default.jpg": {
-        "audio_files": [
-          "x (1).mid", "x (2).mid", "x (3).mid", "x (4).mid", "x (5).mid",
-          "x (6).mid", "x (7).mid", "x (8).mid", "x (9).mid", "x (10).mid",
-          "x (11).mid", "x (12).mid", "x (13).mid", "x (14).mid", "x (15).mid",
-          "x (16).mid", "x (17).mid", "x (18).mid", "x (19).mid", "x (20).mid",
-          "x (21).mid", "x (22).mid", "x (23).mid", "x (24).mid", "x (25).mid",
-          "x (26).mid", "x (27).mid", "x (28).mid", "x (29).mid", "x (30).mid",
-          "x (31).mid", "x (32).mid", "x (33).mid", "x (34).mid", "x (35).mid",
-          "x (36).mid", "x (37).mid", "x (38).mid", "x (39).mid", "x (40).mid",
-          "x (41).mid", "x (42).mid", "x (43).mid", "x (44).mid", "x (45).mid",
-          "x (46).mid", "x (47).mid", "x (48).mid", "x (49).mid", "x (50).mid"
-        ],
-        "album": "Album One"
-      }
+    "x (2).mid": {
+      "song_title": "Song 2",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (3).mid": {
+      "song_title": "Song 3",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (4).mid": {
+      "song_title": "Song 4",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (5).mid": {
+      "song_title": "Song 5",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (6).mid": {
+      "song_title": "Song 6",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (7).mid": {
+      "song_title": "Song 7",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (8).mid": {
+      "song_title": "Song 8",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (9).mid": {
+      "song_title": "Song 9",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (10).mid": {
+      "song_title": "Song 10",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (11).mid": {
+      "song_title": "Song 11",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (12).mid": {
+      "song_title": "Song 12",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (13).mid": {
+      "song_title": "Song 13",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (14).mid": {
+      "song_title": "Song 14",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (15).mid": {
+      "song_title": "Song 15",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (16).mid": {
+      "song_title": "Song 16",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (17).mid": {
+      "song_title": "Song 17",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (18).mid": {
+      "song_title": "Song 18",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (19).mid": {
+      "song_title": "Song 19",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (20).mid": {
+      "song_title": "Song 20",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (21).mid": {
+      "song_title": "Song 21",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (22).mid": {
+      "song_title": "Song 22",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (23).mid": {
+      "song_title": "Song 23",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (24).mid": {
+      "song_title": "Song 24",
+      "image_name": "defaultsss.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (25).mid": {
+      "song_title": "Song 25",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (26).mid": {
+      "song_title": "Song 26",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (27).mid": {
+      "song_title": "Song 27",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (28).mid": {
+      "song_title": "Song 28",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (29).mid": {
+      "song_title": "Song 29",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (30).mid": {
+      "song_title": "Song 30",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (31).mid": {
+      "song_title": "Song 31",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (32).mid": {
+      "song_title": "Song 32",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (33).mid": {
+      "song_title": "Song 33",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (34).mid": {
+      "song_title": "Song 34",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (35).mid": {
+      "song_title": "Song 35",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (36).mid": {
+      "song_title": "Song 36",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (37).mid": {
+      "song_title": "Song 37",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (38).mid": {
+      "song_title": "Song 38",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (39).mid": {
+      "song_title": "Song 39",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (40).mid": {
+      "song_title": "Song 40",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (41).mid": {
+      "song_title": "Song 41",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (42).mid": {
+      "song_title": "Song 42",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (43).mid": {
+      "song_title": "Song 43",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (44).mid": {
+      "song_title": "Song 44",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (45).mid": {
+      "song_title": "Song 45",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (46).mid": {
+      "song_title": "Song 46",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (47).mid": {
+      "song_title": "Song 47",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (48).mid": {
+      "song_title": "Song 48",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (49).mid": {
+      "song_title": "Song 49",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
+    },
+    "x (50).mid": {
+      "song_title": "Song 50",
+      "image_name": "default.jpg", 
+      "artist": "Artist 1",
+      "album_name": "Album One"
     }
+  },
+  "image_mapping": {
+    "default.jpg": {
+      "audio_files": [
+        "x (1).mid", "x (2).mid", "x (3).mid", "x (4).mid", "x (5).mid",
+        "x (6).mid", "x (7).mid", "x (8).mid", "x (9).mid", "x (10).mid",
+        "x (11).mid", "x (12).mid", "x (13).mid", "x (14).mid", "x (15).mid",
+        "x (16).mid", "x (17).mid", "x (18).mid", "x (19).mid", "x (20).mid",
+        "x (21).mid", "x (22).mid", "x (23).mid", "x (24).mid", "x (25).mid",
+        "x (26).mid", "x (27).mid", "x (28).mid", "x (29).mid", "x (30).mid",
+        "x (31).mid", "x (32).mid", "x (33).mid", "x (34).mid", "x (35).mid",
+        "x (36).mid", "x (37).mid", "x (38).mid", "x (39).mid", "x (40).mid",
+        "x (41).mid", "x (42).mid", "x (43).mid", "x (44).mid", "x (45).mid",
+        "x (46).mid", "x (47).mid", "x (48).mid", "x (49).mid", "x (50).mid"
+      ],
+      "album_name": "Album One"
+    }
+  }
 }
-  

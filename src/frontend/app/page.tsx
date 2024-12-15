@@ -3,35 +3,6 @@ import React, { useState, useRef } from "react";
 import MidiPlayerGrid from "./MidiPlayerGrid";
 import { FaMusic } from "react-icons/fa";
 
-// Buat 50 data mockup
-const generateMockData = () => {
-  const mockItems = [];
-  for (let i = 1; i <= 50; i++) {
-    mockItems.push({
-      audioName: `x (${i}).mid`,
-      albumImage: "album1.jpeg",
-      title: `Album ${i}`,
-    });
-  }
-
-  // Bagi data ke dalam pages dengan 10 item per page
-  const data: Record<number, typeof mockItems> = {};
-  const itemsPerPage = 10;
-
-  for (
-    let page = 1;
-    page <= Math.ceil(mockItems.length / itemsPerPage);
-    page++
-  ) {
-    const start = (page - 1) * itemsPerPage;
-    data[page] = mockItems.slice(start, start + itemsPerPage);
-  }
-
-  return data;
-};
-
-const mockData = generateMockData();
-
 export default function Page() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentMode, setCurrentMode] = useState<"Album" | "Music">("Album");
@@ -40,25 +11,32 @@ export default function Page() {
   const [audioFileName, setAudioFileName] = useState<string>("-");
   const [imageFileName, setImageFileName] = useState<string>("-");
   const [mapperFileName, setMapperFileName] = useState<string>("-");
-  const [queryImageFileName, setQueryImageFileName] = useState<string | null>(
-    null
-  );
-  const [queryAudioFileName, setQueryAudioFileName] = useState<string | null>(
-    null
-  );
-  const maxPage = Object.keys(mockData).length;
+  const [queryImageFileName, setQueryImageFileName] = useState<string | null>(null);
+  const [queryAudioFileName, setQueryAudioFileName] = useState<string | null>(null);
+  const [datasets, setDatasets] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isDatasetLoaded, setIsDatasetLoaded] = useState<boolean>(false);
+
+  const checkDatasetStatus = () => {
+    const isComplete = audioFileName !== "-" && 
+                      imageFileName !== "-" && 
+                      mapperFileName !== "-";
+    setIsDatasetLoaded(isComplete);
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   const handleNextPage = () => {
+    const maxPage = Math.ceil((searchResults.length > 0 ? searchResults.length : datasets.length) / 10);
     if (currentPage < maxPage) setCurrentPage(currentPage + 1);
   };
 
   const handleTabChange = (mode: "Album" | "Music") => {
     setCurrentMode(mode);
     setCurrentPage(1);
+    setSearchResults([]);
   };
 
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -111,18 +89,29 @@ export default function Page() {
       const result = await response.json();
       setMessage(result.message || result.error);
 
-      console.log(result);
       if (type === "audio") {
         setAudioFileName(file.name);
       } else if (type === "image") {
         setImageFileName(file.name);
       } else if (type === "mapper") {
         setMapperFileName(file.name);
+        // If mapper contains initial dataset, set it
+        if (result) {
+          const initialData = Object.entries(result).map(([key, value]: [string, any]) => ({
+            audioName: key,
+            title: value.song_title,
+            albumImage: value.image_name,
+            albumName: value.album_name
+          }));
+          setDatasets(initialData);
+        }
       } else if (type === "query_audio") {
         setQueryAudioFileName(file.name);
       } else if (type === "query_image") {
         setQueryImageFileName(file.name);
       }
+      
+      checkDatasetStatus();
     } catch (error) {
       setMessage("Error uploading file");
     }
@@ -130,13 +119,11 @@ export default function Page() {
 
   const audioFileInputRef = useRef<HTMLInputElement | null>(null);
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
-  // const queryFileInputRef = useRef<HTMLInputElement | null>(null);
   const mapperFileInputRef = useRef<HTMLInputElement | null>(null);
   const queryAudioFileInputRef = useRef<HTMLInputElement | null>(null);
   const queryImageFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleButtonClick = (type: string) => {
-    // Ketika tombol diklik, buka dialog file sesuai dengan tipe
     if (type === "audio" && audioFileInputRef.current) {
       audioFileInputRef.current.click();
     } else if (type === "image" && imageFileInputRef.current) {
@@ -150,7 +137,41 @@ export default function Page() {
     }
   };
 
-  const handleFindSimilar = async () => {
+  const handleFindSimilarImage = async () => {
+    if (!queryImageFileName) {
+      setErrorMessage("Please upload a query image first");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/find_similar_images`,
+        {
+          method: "POST",
+        }
+      );
+      const result = await response.json();
+      const formattedResults = result.similar_images.map((item: any) => ({
+        audioName: item.audio_file,
+        title: item.song_title,
+        albumImage: item.image_name,
+        albumName: item.album_name,
+        similarity: item.similarity
+      }));
+      console.log(formattedResults);
+      setSearchResults(formattedResults);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Error searching similar images");
+    }
+  };
+
+  const handleFindSimilarMusic = async () => {
+    if (!queryAudioFileName) {
+      setErrorMessage("Please upload a query audio first");
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://localhost:5000/find_similar_audios`,
@@ -159,23 +180,25 @@ export default function Page() {
         }
       );
       const result = await response.json();
-      console.log(result);
+      const formattedResults = result.similar_audios.map((item: any) => ({
+        audioName: item.audio_name,
+        title: item.song_title,
+        albumImage: item.image_name,
+        albumName: item.album_name,
+        similarity: item.similarity
+      }));
+      console.log(formattedResults)
+      setSearchResults(formattedResults);
     } catch (error) {
       console.error(error);
+      setErrorMessage("Error searching similar music");
     }
   };
 
-  // const handleFindSimilarMusic = async () => {
-  //   try {
-  //     const response = await fetch(`http://localhost:5000/find_similar_music`, {
-  //       method: "POST",
-  //     });
-  //     const result = await response.json();
-  //     console.log(result);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const displayItems = searchResults.length > 0 ? searchResults : datasets;
+  const itemsPerPage = 10;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const itemsToDisplay = displayItems.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="container">
@@ -291,12 +314,12 @@ export default function Page() {
             ←
           </button>
           <span>
-            Page {currentPage} of {maxPage}
+            Page {currentPage} of {Math.ceil(displayItems.length / itemsPerPage)}
           </span>
           <button
             className="nav-btn"
             onClick={handleNextPage}
-            disabled={currentPage === maxPage}
+            disabled={currentPage === Math.ceil(displayItems.length / itemsPerPage)}
           >
             →
           </button>
@@ -305,7 +328,16 @@ export default function Page() {
       <div className="main-content">
         <div className="tabs">
           <div className="search-bar">
-            <button className="tab-btn" onClick={handleFindSimilar}>Search</button>
+            <button
+              className="tab-btn"
+              onClick={
+                currentMode === "Album"
+                  ? handleFindSimilarImage
+                  : handleFindSimilarMusic
+              }
+            >
+              Search
+            </button>
           </div>
           <button
             className={`tab-btn ${currentMode === "Album" ? "active" : ""}`}
@@ -321,7 +353,13 @@ export default function Page() {
           </button>
         </div>
         <div className="audio-grid">
-          <MidiPlayerGrid items={mockData[currentPage]} />
+          {!isDatasetLoaded ? (
+            <div className="no-data-message">
+              Please upload audio dataset, image dataset, and mapper file first
+            </div>
+          ) : (
+            <MidiPlayerGrid items={itemsToDisplay} />
+          )}
         </div>
       </div>
     </div>

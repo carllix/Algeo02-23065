@@ -68,8 +68,8 @@ def find_similar_audios_endpoint():
             {
                 "audio_name": result.audio_name,
                 "song_title": result.song_title,  
-                "album_image": result.album_image,
-                "album_title": result.album_title,
+                "image_name": result.image_name,
+                "album_name": result.album_name,
                 "similarity": result.similarity
             } for result in all_matches
         ]
@@ -230,7 +230,8 @@ def handle_upload(request, target_folder, file_type):
                 # Proses data JSON jika diperlukan
                 if 'audio_mapping' in data:
                     music_retriever.set_mapping(data['audio_mapping'])
-                    
+                    return jsonify(data['audio_mapping'])
+
 
         except json.JSONDecodeError:
             return jsonify({"error": "Invalid JSON format"}), 400

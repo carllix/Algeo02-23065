@@ -2,7 +2,6 @@ from typing import List, Dict, Any
 import os
 from .audiotypes import Note, AudioFeatures, SearchResult
 from .audioprocessing import AudioLoader, AudioNormalizer,Extractor,SimilarityCalculator
-from .audioutils import FileUtils
 import numpy as np
 
 class MusicRetriever:
@@ -40,13 +39,15 @@ class MusicRetriever:
         if audio_name in self.mapping:
             return {
                 "song_title": self.mapping[audio_name].get("song_title", "Unknown"),
-                "album_image": self.mapping[audio_name].get("album_image", "default.jpeg"),
-                "album_title": self.mapping[audio_name].get("album_title", "Unknown")
+                "image_name": self.mapping[audio_name].get("image_name", "default.jpeg"),
+                "album_name": self.mapping[audio_name].get("album_name", "Unknown"),
+                "artist": self.mapping[audio_name].get("artist","Unknown")
             }
         return {
             "song_title": "Unknown",
-            "album_image": "default.jpg",
-            "album_title": "Unknown"
+            "image_name": "default.jpg",
+            "album_name": "Unknown",
+            "artist": "Unknown"
         }
     
     def load_audio_files(self, root_dir: str) -> List[str]:
@@ -97,8 +98,9 @@ class MusicRetriever:
                 similarities[audio_name] = {
                     "similarity": similarity,
                     "song_title": info["song_title"],
-                    "album_image": info["album_image"],
-                    "album_title": info["album_title"]  
+                    "image_name": info["image_name"],
+                    "album_name": info["album_name"],
+                    "artist": info["artist"]
                 }
             output = self.similarity_calculator.rank_results(similarities)
             print(output)

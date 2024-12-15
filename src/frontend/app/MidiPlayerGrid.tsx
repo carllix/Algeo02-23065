@@ -3,8 +3,10 @@ import MidiPlayer from './MidiPlayer';
 
 interface AudioData {
   audioName: string;
-  albumImage?: string; // Tambahkan opsional jika gambar tidak selalu ada
+  albumImage?: string;
   title: string;
+  albumName?: string;
+  similarity?: number;
 }
 
 interface MidiPlayerGridProps {
@@ -22,15 +24,23 @@ const MidiPlayerGrid: React.FC<MidiPlayerGridProps> = ({ items }) => {
           {item.albumImage && (
             <div className="image-container w-full mb-2">
               <img
-                src={`/assets/image/${item.albumImage}`}
+                src={`/test/images/${item.albumImage}`} // Sesuaikan dengan path baru
                 alt={item.title}
                 className="album-image w-full h-40 object-cover rounded"
               />
             </div>
           )}
           <div className="song-title font-medium mb-2 text-center">{item.title}</div>
+          {item.albumName && (
+            <div className="album-name text-sm text-gray-600 mb-2">{item.albumName}</div>
+          )}
+          {item.similarity !== undefined && (
+            <div className="similarity text-sm text-blue-600 mb-2">
+              Similarity: {(item.similarity * 100).toFixed(2)}%
+            </div>
+          )}
           <div className="player-container w-full">
-            <MidiPlayer audioUrl={`/assets/audio/${item.audioName}`} />
+            <MidiPlayer audioUrl={`/test/audio/${item.audioName}`} />
           </div>
         </div>
       ))}
