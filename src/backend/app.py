@@ -14,11 +14,11 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # Folder tujuan untuk setiap jenis dataset
-IMAGE_FOLDER = "../../test/images"
-AUDIO_FOLDER = "../../test/audio"
-MAPPER_FOLDER = "../../test/mapper"
-QUERY_IMAGE_FOLDER = "../../test/query_image"
-QUERY_AUDIO_FOLDER = "../../test/query_audio"
+IMAGE_FOLDER = "../frontend/public/test/images"
+AUDIO_FOLDER = "../frontend/public/test/audio"
+MAPPER_FOLDER = "../frontend/public/test/mapper"
+QUERY_IMAGE_FOLDER = "../frontend/public/test/query_image"
+QUERY_AUDIO_FOLDER = "../frontend/public/test/query_audio"
 
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 os.makedirs(AUDIO_FOLDER, exist_ok=True)
