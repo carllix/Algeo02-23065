@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import MidiPlayerGrid from "./MidiPlayerGrid";
+import { FaMusic } from "react-icons/fa";
 
 // Buat 50 data mockup
 const generateMockData = () => {
@@ -39,8 +40,12 @@ export default function Page() {
   const [audioFileName, setAudioFileName] = useState<string>("-");
   const [imageFileName, setImageFileName] = useState<string>("-");
   const [mapperFileName, setMapperFileName] = useState<string>("-");
-
-
+  const [queryImageFileName, setQueryImageFileName] = useState<string | null>(
+    null
+  );
+  const [queryAudioFileName, setQueryAudioFileName] = useState<string | null>(
+    null
+  );
   const maxPage = Object.keys(mockData).length;
 
   const handlePrevPage = () => {
@@ -63,7 +68,10 @@ export default function Page() {
   ) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
-    if ((type === "audio" || type === "image") && !e.target.files[0].name.endsWith(".zip")) {
+    if (
+      (type === "audio" || type === "image") &&
+      !e.target.files[0].name.endsWith(".zip")
+    ) {
       setErrorMessage(`Please upload a .zip file for ${type} dataset.`);
       return;
     }
@@ -110,18 +118,22 @@ export default function Page() {
         setImageFileName(file.name);
       } else if (type === "mapper") {
         setMapperFileName(file.name);
+      } else if (type === "query_audio") {
+        setQueryAudioFileName(file.name);
+      } else if (type === "query_image") {
+        setQueryImageFileName(file.name);
       }
-
     } catch (error) {
       setMessage("Error uploading file");
     }
   };
 
   const audioFileInputRef = useRef<HTMLInputElement | null>(null);
-  // const queryAudioFileInputRef = useRef<HTMLInputElement | null>(null);
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
-  const queryFileInputRef = useRef<HTMLInputElement | null>(null);
+  // const queryFileInputRef = useRef<HTMLInputElement | null>(null);
   const mapperFileInputRef = useRef<HTMLInputElement | null>(null);
+  const queryAudioFileInputRef = useRef<HTMLInputElement | null>(null);
+  const queryImageFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleButtonClick = (type: string) => {
     // Ketika tombol diklik, buka dialog file sesuai dengan tipe
@@ -131,19 +143,21 @@ export default function Page() {
       imageFileInputRef.current.click();
     } else if (type === "mapper" && mapperFileInputRef.current) {
       mapperFileInputRef.current.click();
-    } else if (
-      (type === "query_audio" || type === "query_image") &&
-      queryFileInputRef.current
-    ) {
-      queryFileInputRef.current.click();
+    } else if (type === "query_audio" && queryAudioFileInputRef.current) {
+      queryAudioFileInputRef.current.click();
+    } else if (type === "query_image" && queryImageFileInputRef.current) {
+      queryImageFileInputRef.current.click();
     }
   };
 
   const handleFindSimilar = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/find_similar_images`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `http://localhost:5000/find_similar_images`,
+        {
+          method: "POST",
+        }
+      );
       const result = await response.json();
       console.log(result);
     } catch (error) {
@@ -158,11 +172,28 @@ export default function Page() {
         <div className="upload-section">
           <div className="upload-preview">
             {currentMode === "Album" ? (
-              <span>Pic_Name.png</span>
+              queryImageFileName ? (
+                <>
+                  <img
+                    src={`/test/query_image/${queryImageFileName}`}
+                    alt="Preview"
+                    className="preview-img"
+                  />
+                  <span className="image-name">{queryImageFileName}</span>
+                </>
+              ) : (
+                <span>Upload Your Album Picture</span>
+              )
+            ) : queryAudioFileName ? (
+              <>
+                <FaMusic size={15} color="black" />
+                <span className="audio-name">{queryAudioFileName}</span>
+              </>
             ) : (
-              <span>Audio_Name.midi</span>
+              <span>Upload Your MIDI Audio</span>
             )}
           </div>
+
           <button
             className="upload-btn"
             onClick={() =>
@@ -174,7 +205,11 @@ export default function Page() {
             Upload {currentMode === "Album" ? "Album" : "Audio"}
             <input
               type="file"
-              ref={queryFileInputRef}
+              ref={
+                currentMode === "Album"
+                  ? queryImageFileInputRef
+                  : queryAudioFileInputRef
+              }
               onChange={(e) => {
                 handleUpload(
                   e,
