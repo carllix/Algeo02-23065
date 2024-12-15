@@ -15,9 +15,13 @@ body {
     font-size: 25px;
     font-weight: bold;
     text-align: center;
-    color: #eabe58;
-    border: #ccc;
+    color: #ffffff;
     margin-bottom: 20px;
+    text-shadow:
+        1px 1px 0 #56961e, /* Bayangan ke kanan bawah */
+        -1px 1px 0 #56961e, /* Bayangan ke kiri bawah */
+        1px -1px 0 #56961e, /* Bayangan ke kanan atas */
+        -1px -1px 0 #56961e; /* Bayangan ke kiri atas */
 }
 
 .sidebar {
@@ -28,7 +32,7 @@ body {
     justify-content: space-between;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-    height: 100%;
+    height: 105.5%;
 }
 
 .upload-section {
@@ -109,7 +113,7 @@ body {
 }
 
 .search-bar input {
-    width: 260px;
+    width: 268px;
     height: 20px;
     padding: 5px;
     background-color: #F4F1DE; /* Soft Gray */
@@ -138,7 +142,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Ukuran minimum 220px */
     gap: 20px;
     padding: 0px;
-    max-height: 70vh;
+    max-height: 99vh;
     overflow-y: auto;
     justify-content: start;
 }
@@ -184,8 +188,8 @@ audio {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    padding: 10px 0;
+    gap: 5px;
+    padding: 5px 0;
     margin-top: auto;
     color: #1C1C1C; /* Deep Black */
 }

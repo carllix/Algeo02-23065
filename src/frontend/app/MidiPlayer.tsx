@@ -127,7 +127,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
   };
 
   const handleNext = () => {
-    setCurrentTime((prev) => Math.min(prev + 20, duration));
+    setCurrentTime((prev) => Math.min(prev + 10, duration));
     if (isPlaying) {
       handlePlayPause(); // Restart playback
     }
