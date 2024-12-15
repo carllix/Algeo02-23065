@@ -17,12 +17,12 @@ class AudioFeatures:
 
 @dataclass
 class SearchResult:
-    audio_name: str
+    audio_name: str 
     similarity: float
     song_title: str = "Unknown"
-    album_image: str = "default.jpg"
-    album_title: str = "Unknown"
-
+    image_name: str = "default.jpg"
+    album_name: str = "Unknown"
+    artist:str ="Unknown"
 
 @dataclass
 class ProcessedAudio:
