@@ -47,10 +47,32 @@ body {
     border-radius: 8px;
     font-size: 14px;
     color: #1C1C1C; /* Deep Black */
+    border: 1px solid #e0e0e0; /* Light border for subtle separation */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+    transition: all 0.3s ease; /* Smooth transition for interactive effects */
 }
 
+.upload-preview:hover {
+    background-color: #e0e0e0; /* Change background color on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow */
+    cursor: pointer; /* Change cursor to indicate it's interactive */
+}
+
+.upload-preview img {
+    max-width: 60px;
+    max-height: 60px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.upload-preview span {
+    text-align: center;
+    font-weight: 400;
+}
+
+
 .upload-btn {
-    background-color: #88C057; /* Grass Green */
+    background-color: #88C057;
     color: #F4F1DE;
     border: none;
     padding: 10px 20px;
@@ -58,6 +80,9 @@ body {
     cursor: pointer;
 }
 
+.audio-name {
+    margin-left: 10px;
+}
 .menu {
     margin-bottom: 20px;
 }
@@ -71,7 +96,7 @@ body {
     cursor: pointer;
     width: 100%;
     margin-bottom: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 .files {
