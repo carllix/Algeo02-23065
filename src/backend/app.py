@@ -6,14 +6,15 @@ import json
 import shutil
 import time
 from album_finder.album_finder import find_similar_images
+from music_retriever import MusicRetriever
+
 
 app = Flask(__name__)
 
 # Mengonfigurasi CORS
-
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+music_retriever = MusicRetriever()  
 
-# Folder tujuan untuk setiap jenis dataset
 IMAGE_FOLDER = "../../test/images"
 AUDIO_FOLDER = "../../test/audio"
 MAPPER_FOLDER = "../../test/mapper"
@@ -47,6 +48,46 @@ def upload_query_audio():
     return handle_upload(request, QUERY_AUDIO_FOLDER, "audio")
 
 
+
+
+@app.route("/find_similar_audios", methods=["POST"])
+def find_similar_audios_endpoint():
+    try:
+        query_folder = QUERY_AUDIO_FOLDER
+        query_files = os.listdir(query_folder)
+        if len(query_files) != 1:
+            return (
+                jsonify({"error": "Query folder must contain exactly one image"}),
+                400,
+            )
+        start_time = time.time()
+        query_features = music_retriever.process_query_file(query_folder, query_files[0])
+        all_matches = music_retriever.find_matches(query_features)
+        total_results = len(all_matches)
+        similar_audios = [
+            {
+                "audio_name": result.audio_name,
+                "song_title": result.song_title,  
+                "album_image": result.album_image,
+                "album_title": result.album_title,
+                "similarity": result.similarity
+            } for result in all_matches
+        ]
+
+        execution_time = (time.time() - start_time) * 1000
+        return (
+            jsonify(
+                {
+                    "similar_audios": similar_audios,
+                    "execution_time_ms": execution_time,
+                    "total_results" : total_results,
+                }
+            ),
+            200,
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/find_similar_images", methods=["POST"])
 def find_similar_images_endpoint():
     try:
@@ -71,6 +112,7 @@ def find_similar_images_endpoint():
             max_results=None,
             threshold=0,
         )
+        total_results = len(similar_images)
 
         end_time = time.time()
         execution_time_ms = (end_time - start_time) * 1000
@@ -80,6 +122,7 @@ def find_similar_images_endpoint():
                 {
                     "similar_images": similar_images,
                     "execution_time_ms": execution_time_ms,
+                    "total_results": total_results
                 }
             ),
             200,
@@ -147,6 +190,10 @@ def handle_upload(request, target_folder, file_type):
             with open(file_path, "r") as json_file:
                 data = json.load(json_file)
                 # Proses data JSON jika diperlukan
+                if 'audio_mapping' in data:
+                    music_retriever.set_mapping(data['audio_mapping'])
+                    
+
         except json.JSONDecodeError:
             return jsonify({"error": "Invalid JSON format"}), 400
 

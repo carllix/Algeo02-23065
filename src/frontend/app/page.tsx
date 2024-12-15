@@ -151,6 +151,18 @@ export default function Page() {
     }
   };
 
+  // const handleFindSimilarMusic = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/find_similar_music`, {
+  //       method: "POST",
+  //     });
+  //     const result = await response.json();
+  //     console.log(result);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   return (
     <div className="container">
       <div className="sidebar">

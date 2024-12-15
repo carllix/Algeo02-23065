@@ -17,10 +17,11 @@ class AudioFeatures:
 
 @dataclass
 class SearchResult:
-    """Hasil pencarian audio"""
-    file_name: str
+    audio_name: str
     similarity: float
-    title: Optional[str] = None
+    song_title: str = "Unknown"
+    album_image: str = "default.jpg"
+    album_title: str = "Unknown"
 
 
 @dataclass

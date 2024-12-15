@@ -33,20 +33,36 @@ class MusicRetriever:
             ftb=combined_ftb,
         )
 
+    def set_mapping(self, mapping: Dict[str, Dict[str, Any]]) -> None:
+        self.mapping = mapping
+
+    def get_file_info(self, audio_name: str) -> Dict[str, Any]:
+        if audio_name in self.mapping:
+            return {
+                "song_title": self.mapping[audio_name].get("song_title", "Unknown"),
+                "album_image": self.mapping[audio_name].get("album_image", "default.jpg"),
+                "album_title": self.mapping[audio_name].get("album_title", "Unknown")
+            }
+        return {
+            "song_title": "Unknown",
+            "album_image": "default.jpg",
+            "album_title": "Unknown"
+        }
+    
     def load_audio_files(self, root_dir: str) -> List[str]:
         processed_files = []
-        for file in os.listdir(root_dir):
+        for audio_name in os.listdir(root_dir):
             try:    
-                file_path = os.path.join(root_dir, file)
+                file_path = os.path.join(root_dir, audio_name)
                 notes = self.loader.load_audio_file(file_path)
                 if notes:  
                     notes = self.normalizer.normalize_tempo(notes)
                     windows = self.normalizer.apply_windowing(notes, 40, 8)
                     features = self._extract_features(windows)
-                    self.dataset_features[file] = features
+                    self.dataset_features[audio_name] = features
                     processed_files.append(file_path)
             except  Exception as e :
-                print(f"Skipping {file}: {str(e)}")
+                print(f"Skipping {audio_name}: {str(e)}")
                 continue 
         return processed_files
     
@@ -73,61 +89,16 @@ class MusicRetriever:
         output = []
         if self.dataset_features:  
             similarities = {}
-            for file_name, features in self.dataset_features.items():
-                similarity = self.similarity_calculator.calculate_weighted_similarity(query_features, features)
-                similarities[file_name] = similarity
+            for audio_name, features in self.dataset_features.items():
+                similarity = self.similarity_calculator.calculate_weighted_similarity(
+                    query_features, features
+                )
+                info = self.get_file_info(audio_name)
+                similarities[audio_name] = {
+                    "similarity": similarity,
+                    "song_title": info["song_title"],
+                    "album_image": info["album_image"],
+                    "album_title": info["album_title"]  
+                }
             output = self.similarity_calculator.rank_results(similarities)
         return output
-    
-    def get_paginated_results(self, results: List[SearchResult], page: int, items_per_page: int) -> Dict[str, Any]:
-        """
-        I.S : Hasil pencarian sudah tersedia
-        F.S : Menghasilkan dictionary berisi:
-                - items: List[SearchResult] untuk halaman yang diminta
-                - total_pages: Total halaman
-                - current_page: Halaman sekarang
-        """
-        total_items = len(results)
-        total_pages = (total_items + items_per_page - 1) // items_per_page
-        start_idx = (page - 1) * items_per_page
-        end_idx = min(start_idx + items_per_page, total_items)
-        
-        return {
-            'items': results[start_idx:end_idx],
-            'total_pages': total_pages,
-            'current_page': page
-        }
-
-    # def process_query_recording(self,root_dir:str, recording_data: bytes) -> AudioFeatures:
-    #     try:
-    #         temp_file = "temp_recording.wav"
-    #         file_path = os.path.join(root_dir, temp_file)
-    #         with open(file_path, "wb") as f:
-    #             f.write(recording_data)
-    #         notes = self.loader.load_wav_file(file_path)
-    #         os.remove(file_path)
-    #         notes = self.normalizer.normalize_tempo(notes)
-    #         windows = self.normalizer.apply_windowing(notes, 40, 8)
-    #         return self._extract_features(windows)
-        
-    #     except Exception as e:
-    #         raise RuntimeError(f"Recording processing failed: {str(e)}")
-
-    def load_zipped_dataset(self, root_dir:str, zipped_path: str) -> List[str]:
-        """
-        I.S : File path ZIP valid dan tersedia 
-        F.S : File terextract dan terproses, mengembalikan list file yang berhasil diproses
-        """
-        temp_dir = os.path.join(root_dir, "audio_extracted_temp")  
-        os.makedirs(temp_dir, exist_ok=True)
-        try:
-            midi_files = FileUtils.extract_dataset_zip(zipped_path, temp_dir)
-            
-            if not midi_files:
-                raise ValueError(f"Tidak ada file MIDI ditemukan dalam {zipped_path}")
-            processed_files = self.load_audio_files(temp_dir)
-            return processed_files
-        finally:
-            FileUtils.delete_temp(midi_files, temp_dir)
-
-
