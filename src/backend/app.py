@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,send_from_directory
 from flask_cors import CORS
 import zipfile
 import os
@@ -15,17 +15,28 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 music_retriever = MusicRetriever()  
 
-IMAGE_FOLDER = "../frontend/public/test/images"
-AUDIO_FOLDER = "../frontend/public/test/audio"
-MAPPER_FOLDER = "../frontend/public/test/mapper"
-QUERY_IMAGE_FOLDER = "../frontend/public/test/query_image"
-QUERY_AUDIO_FOLDER = "../frontend/public/test/query_audio"
+
+
+
+BASE_TEST_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'test')
+
+# Definisi subfolder dalam tests
+IMAGE_FOLDER = os.path.join(BASE_TEST_PATH, 'images')
+AUDIO_FOLDER = os.path.join(BASE_TEST_PATH, 'audio')
+MAPPER_FOLDER = os.path.join(BASE_TEST_PATH, 'mapper')
+QUERY_IMAGE_FOLDER = os.path.join(BASE_TEST_PATH, 'query_image')
+QUERY_AUDIO_FOLDER = os.path.join(BASE_TEST_PATH, 'query_audio')
+
 
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 os.makedirs(AUDIO_FOLDER, exist_ok=True)
 os.makedirs(MAPPER_FOLDER, exist_ok=True)
 os.makedirs(QUERY_IMAGE_FOLDER, exist_ok=True)
 os.makedirs(QUERY_AUDIO_FOLDER, exist_ok=True)
+
+@app.route('/test/<path:filename>')
+def serve_test_file(filename):
+    return send_from_directory(BASE_TEST_PATH, filename)
 
 @app.route("/upload/image", methods=["POST"])
 def upload_image_zip():
@@ -46,6 +57,32 @@ def upload_query_image():
 @app.route("/upload/query_audio", methods=["POST"])
 def upload_query_audio():
     return handle_upload(request, QUERY_AUDIO_FOLDER, "audio")
+def ensure_folders_exist():
+    """Memastikan semua folder yang dibutuhkan sudah dibuat"""
+    folders = {
+        'images': IMAGE_FOLDER,
+        'audio': AUDIO_FOLDER,
+        'mapper': MAPPER_FOLDER,
+        'query_image': QUERY_IMAGE_FOLDER,
+        'query_audio': QUERY_AUDIO_FOLDER
+    }
+    
+    for name, path in folders.items():
+        try:
+            os.makedirs(path, exist_ok=True)
+            print(f"Created/verified folder: {name} at {path}")
+        except Exception as e:
+            print(f"Error creating folder {name}: {str(e)}")
+
+ensure_folders_exist()
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return jsonify({"error": "File not found"}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({"error": "Internal server error"}), 500
 
 
 
@@ -168,6 +205,7 @@ def find_similar_images_endpoint():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
 
 def handle_upload(request, target_folder, file_type):
     """Fungsi untuk menangani upload file dan ekstraksi ZIP ke folder baru,

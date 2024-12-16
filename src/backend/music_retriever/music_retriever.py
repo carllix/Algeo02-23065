@@ -94,14 +94,14 @@ class MusicRetriever:
                 similarity = self.similarity_calculator.calculate_weighted_similarity(
                     query_features, features
                 )
-                info = self.get_file_info(audio_name)
-                similarities[audio_name] = {
-                    "similarity": similarity,
-                    "song_title": info["song_title"],
-                    "image_name": info["image_name"],
-                    "album_name": info["album_name"],
-                    "artist": info["artist"]
-                }
+                if similarity >  0.55:
+                    info = self.get_file_info(audio_name)
+                    similarities[audio_name] = {
+                        "similarity": similarity,
+                        "song_title": info["song_title"],
+                        "image_name": info["image_name"],
+                        "album_name": info["album_name"],
+                        "artist": info["artist"]
+                    }
             output = self.similarity_calculator.rank_results(similarities)
-            print(output)
         return output

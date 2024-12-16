@@ -24,7 +24,8 @@ const MidiPlayerGrid: React.FC<MidiPlayerGridProps> = ({ items }) => {
           {item.albumImage && (
             <div className="image-container w-full mb-2">
               <img
-                src={`/test/images/${item.albumImage}`} // Sesuaikan dengan path baru
+                // src={`/test/images/${item.albumImage}`} 
+                src={`http://localhost:5000/test/images/${item.albumImage}`}
                 alt={item.title}
                 className="album-image w-full h-40 object-cover rounded"
               />
@@ -40,7 +41,8 @@ const MidiPlayerGrid: React.FC<MidiPlayerGridProps> = ({ items }) => {
             </div>
           )}
           <div className="player-container w-full">
-            <MidiPlayer audioUrl={`/test/audio/${item.audioName}`} />
+            {/* <MidiPlayer audioUrl={`/test/audio/${item.audioName}`} /> */}
+            <MidiPlayer audioUrl={`http://localhost:5000/test/audio/${item.audioName}`} />
           </div>
         </div>
       ))}

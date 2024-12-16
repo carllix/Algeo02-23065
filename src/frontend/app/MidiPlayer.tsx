@@ -58,6 +58,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
         const now = Tone.now();
 
         if (synths.length === 0) {
+          // const response = await fetch(audioUrl);
           const response = await fetch(audioUrl);
           if (!response.ok) {
             throw new Error(`Failed to load MIDI file: ${response.statusText}`);
