@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Audio Searcher",
+  title: "Sound The Sheep",
   description: "Search and play your audio files easily.",
 };
 
