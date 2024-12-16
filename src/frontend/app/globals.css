@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #6fccf4; /* Sky Blue */
-  color: #1c1c1c; /* Deep Black */
-  /* height: 100vh; */
+  transform: scale(1.25); /* Skala 125% */
+  transform-origin: top left;
+  width: 80%;
+  height: 100%;
+  overflow: hidden; /* Hilangkan scroll yang tidak diinginkan */
 }
 
 .container {
