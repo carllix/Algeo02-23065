@@ -1,25 +1,55 @@
 <h1 align="center">Tugas Besar 2 IF2123 Aljabar Linear dan Geometri</h1>
 <h3 align="center">Image Retrieval dan Music Information Retrieval Menggunakan PCA dan Vektor</h3>
 
+![Sound TheSheep](doc/image-readme/SoundTheSheep.jpg)
+
 ## Table of Contents
 
 - [Description](#description)
 - [Features](#features)
+- [Tech Stack](#tech-stack)
 - [Structure](#structure)
-- [How To Run](#how-to-run)
+- [Getting Started](#getting-started)
 - [Contributors](#contributors)
 - [References](#references)
 
 ## Description
-
+SoundTheSheep is a web application designed to detect and retrieve information from sounds and images within a dataset. The platform allows users to query the dataset using either MIDI audio samples or album cover images to find relevant matches.
 
 ## Features
 
+- **Album Picture Finder - Principal Component Analysis**
+![Album Picture Finder](doc/image-readme/album-finder.png)
+  Use album cover images as queries to find related information in the dataset.
+
+- **Music Information Retrieval - Query by Humming**
+![Music Retrieval](doc/image-readme/music-retrieval.png)
+  Upload a MIDI file to search for matching sounds within the dataset.
+
+
+## Tech Stack
+- **Frontend**: Built with **Next.js**, ensuring a seamless and user-friendly interface.
+- **Backend**: Powered by **Flask (Python)** for handling audio and image processing.
 
 ## Structure
+```
+├── README.md
+├── src/
+│   ├── backend
+│   └── frontend
+├── test/
+│   ├── audio
+│   ├── images
+│   ├── mapper
+|   ├── query_audio
+|   └── query_image
+└── doc
+```
+- src : contains the main program's source code files.
+- doc : contains the assignment report.
+- test : contains datasets and query fir testing.
 
-
-## Installing/Getting Started
+## Getting Started
 1. **Clone this repository:**
    ```bash
    git clone https://github.com/carllix/Algeo02-23065.git
