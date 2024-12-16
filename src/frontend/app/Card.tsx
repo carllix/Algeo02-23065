@@ -33,7 +33,7 @@ export default function Card({
       {/* Album Image */}
       <div className="flex flex-col items-center">
         <img
-          src="/test/query_image/0ecuaq.jpg"
+          src={`http://localhost:5000/test/images/${albumImage}`}
           alt={albumName}
           className="size-20 object-cover rounded-md mb-2"
         />
