@@ -1,7 +1,6 @@
 import os
 import numpy as np
 from PIL import Image
-# import time
 
 def load_and_preprocess_images(directory_path, image_size=(32, 32)):
     image_data, image_names = [], []
@@ -56,28 +55,3 @@ def find_similar_images(query_image_path, dataset_path, components_count=50, max
 
     similar_images = compute_image_similarity(dataset_transformed, query_transformed, dataset_image_names, threshold, max_results)
     return similar_images
-
-# # Contoh Penggunaan
-# if __name__ == "__main__":
-#     # Sesuaiin dengan direktori dataset dan query
-#     dataset_path = "../../test/dataset" 
-#     query_path = "../../test/Gajah.jpg"
-
-#     start_time = time.time()
-
-#     similar_images = find_similar_images(
-#         query_path,
-#         dataset_path,
-#         components_count=50,
-#         max_results=None,
-#         threshold=0.6
-#     )
-
-#     end_time = time.time()
-#     execution_time_ms = (end_time - start_time) * 1000
-
-#     print("Top Similar Images:")
-#     for image_name, similarity in similar_images:
-#         print(f"{image_name}: {similarity:.2%}")
-
-#     print(f"Execution Time: {execution_time_ms:.2f} ms")
