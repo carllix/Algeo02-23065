@@ -2,7 +2,7 @@ import os
 import numpy as np
 from PIL import Image
 
-def load_and_preprocess_images(directory_path, image_size=(32, 32)):
+def load_and_preprocess_images(directory_path, image_size):
     image_data, image_names = [], []
     for file_name in os.listdir(directory_path):
         if file_name.lower().endswith(('.png', '.jpg', '.jpeg')):
@@ -24,7 +24,7 @@ def apply_pca(image_data, components_count):
     transformed_data = np.dot(image_data, principal_components.T)
     return transformed_data, principal_components
 
-def compute_image_similarity(dataset_transformed, query_transformed, image_names, threshold=0, max_results=None):
+def compute_image_similarity(dataset_transformed, query_transformed, image_names, threshold, max_results):
     distances = np.linalg.norm(dataset_transformed - query_transformed, axis=1)
     max_distance = np.max(distances)
     similarity_scores = 1 - (distances / max_distance)
@@ -41,7 +41,7 @@ def compute_image_similarity(dataset_transformed, query_transformed, image_names
     return similar_images
 
 
-def find_similar_images(query_image_path, dataset_path, components_count=50, max_results=None, image_size=(64, 64), threshold=0):
+def find_similar_images(query_image_path, dataset_path, components_count, max_results, image_size, threshold):
     dataset_images, dataset_image_names = load_and_preprocess_images(dataset_path, image_size)
     standardized_dataset, mean_image = standardize_images(dataset_images)
 

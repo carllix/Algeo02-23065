@@ -161,6 +161,7 @@ def find_similar_images_endpoint():
             dataset_path=dataset_path,
             components_count=50,
             max_results=None,
+            image_size=(64, 64),
             threshold=0.55,
         )
         total_results = len(similar_images)
