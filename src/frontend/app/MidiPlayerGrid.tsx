@@ -15,33 +15,31 @@ interface MidiPlayerGridProps {
 
 const MidiPlayerGrid: React.FC<MidiPlayerGridProps> = ({ items }) => {
   return (
-    <div className="audio-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="audio-grid">
       {items.map((item, index) => (
         <div
           key={index}
-          className="audio-item bg-white rounded-lg shadow p-4 flex flex-col items-center"
+          className="audio-item"
         >
           {item.albumImage && (
-            <div className="image-container w-full mb-2">
+            <div className="image-container">
               <img
-                // src={`/test/images/${item.albumImage}`} 
                 src={`http://localhost:5000/test/images/${item.albumImage}`}
                 alt={item.title}
-                className="album-image w-full h-40 object-cover rounded"
+                className="album-image"
               />
             </div>
           )}
-          <div className="song-title font-medium mb-2 text-center">{item.title}</div>
+          <div className="song-title">{item.title}</div>
           {item.albumName && (
-            <div className="album-name text-sm text-gray-600 mb-2">{item.albumName}</div>
+            <div className="album-name">{item.albumName}</div>
           )}
           {item.similarity !== undefined && (
-            <div className="similarity text-sm text-blue-600 mb-2">
+            <div className="similarity">
               Similarity: {(item.similarity * 100).toFixed(2)}%
             </div>
           )}
-          <div className="player-container w-full">
-            {/* <MidiPlayer audioUrl={`/test/audio/${item.audioName}`} /> */}
+          <div className="player-container">
             <MidiPlayer audioUrl={`http://localhost:5000/test/audio/${item.audioName}`} />
           </div>
         </div>

@@ -5,8 +5,8 @@ export default function InteractiveLayout({ children }: { children: React.ReactN
   const [audioList, setAudioList] = useState<string[]>([]);
 
   return (
-    <div className="container">
-      <div className="main-content">
+    <div className="">
+      <div className="">
         {children}
         <div className="audio-grid">
           {audioList.map((audio, index) => (
