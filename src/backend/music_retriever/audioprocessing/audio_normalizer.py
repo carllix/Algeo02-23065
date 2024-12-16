@@ -48,7 +48,7 @@ class AudioNormalizer:
             return output
         except Exception as e:
             print(f"Error di normalisasi tempo: {e}")
-            return notes
+            return notes 
     # def normalize_pitch(self, notes: List[Note]) -> List[Note]:
     #     if not notes:
     #         return []

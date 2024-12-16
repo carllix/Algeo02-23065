@@ -58,7 +58,7 @@ class MusicRetriever:
                 notes = self.loader.load_audio_file(file_path)
                 if notes:  
                     notes = self.normalizer.normalize_tempo(notes)
-                    windows = self.normalizer.apply_windowing(notes, 40, 8)
+                    windows = self.normalizer.apply_windowing(notes, 30, 6)
                     features = self._extract_features(windows)
                     self.dataset_features[audio_name] = features
                     processed_files.append(file_path)
@@ -75,7 +75,7 @@ class MusicRetriever:
             notes = self.loader.load_audio_file(file_path)   
             if notes :  
                 notes = self.normalizer.normalize_tempo(notes)   
-                windows = self.normalizer.apply_windowing(notes, 40, 8)
+                windows = self.normalizer.apply_windowing(notes, 30, 6)
                 return self._extract_features(windows)  
             else:
                 raise ValueError("Tidak ada notes valid pada query file")
