@@ -11,22 +11,16 @@ from music_retriever import MusicRetriever
 
 app = Flask(__name__)
 
-# Mengonfigurasi CORS
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 music_retriever = MusicRetriever()  
 
-
-
-
 BASE_TEST_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'test')
 
-# Definisi subfolder dalam tests
 IMAGE_FOLDER = os.path.join(BASE_TEST_PATH, 'images')
 AUDIO_FOLDER = os.path.join(BASE_TEST_PATH, 'audio')
 MAPPER_FOLDER = os.path.join(BASE_TEST_PATH, 'mapper')
 QUERY_IMAGE_FOLDER = os.path.join(BASE_TEST_PATH, 'query_image')
 QUERY_AUDIO_FOLDER = os.path.join(BASE_TEST_PATH, 'query_audio')
-
 
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 os.makedirs(AUDIO_FOLDER, exist_ok=True)
