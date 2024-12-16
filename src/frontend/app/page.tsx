@@ -65,7 +65,7 @@ export default function Page() {
 
   const handleReset = async() => {
     try {
-      setIsLoading(true); // Tambahkan loading state
+      setIsLoading(true);
       const response = await fetch(
         `http://localhost:5000/reset`,
         {
@@ -74,28 +74,69 @@ export default function Page() {
       );
       const result = await response.json();
       
-      // Reset semua state ke nilai awal
+      // Reset all state variables
       setSearchResults([]);
       setQueryImageFileName(null);
       setQueryAudioFileName(null);
       setCurrentPage(1);
       setErrorMessage("");
-      setTimeExecution(null); // Reset execution time
-      setMessage(null); // Reset message
-      setDatasets([]); // Reset datasets
-      setAudioFileName("-");  // Reset file names
+      setTimeExecution(null);
+      setMessage(null);
+      setDatasets([]); 
+      setAudioFileName("-");
       setImageFileName("-");
       setMapperFileName("-");
+      
+      // Important: Reset file input refs
+      if (audioFileInputRef.current) audioFileInputRef.current.value = "";
+      if (imageFileInputRef.current) imageFileInputRef.current.value = "";
+      if (mapperFileInputRef.current) mapperFileInputRef.current.value = "";
+      if (queryAudioFileInputRef.current) queryAudioFileInputRef.current.value = "";
+      if (queryImageFileInputRef.current) queryImageFileInputRef.current.value = "";
+      
+      // Update dataset status
       setIsDatasetLoaded(false);
-  
-      // Tampilkan pesan sukses
+      
       setMessage(result.message);
     } catch (error) {
       setErrorMessage("Error resetting data");
     } finally {
-      setIsLoading(false); // Matikan loading state
+      setIsLoading(false);
     }
   };
+  // const handleReset = async() => {
+  //   try {
+  //     setIsLoading(true); // Tambahkan loading state
+  //     const response = await fetch(
+  //       `http://localhost:5000/reset`,
+  //       {
+  //         method: "POST",
+  //       }
+  //     );
+  //     const result = await response.json();
+      
+  //     // Reset semua state ke nilai awal
+  //     setSearchResults([]);
+  //     setQueryImageFileName(null);
+  //     setQueryAudioFileName(null);
+  //     setCurrentPage(1);
+  //     setErrorMessage("");
+  //     setTimeExecution(null); // Reset execution time
+  //     setMessage(null); // Reset message
+  //     setDatasets([]); // Reset datasets
+  //     setAudioFileName("-");  // Reset file names
+  //     setImageFileName("-");
+  //     setMapperFileName("-");
+  //     setIsDatasetLoaded(false);
+  
+  //     // Tampilkan pesan sukses
+  //     setMessage(result.message);
+  //   } catch (error) {
+  //     setErrorMessage("Error resetting data");
+  //   } finally {
+  //     setIsLoading(false); // Matikan loading state
+  //   }
+  // };
 
   const handleUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
