@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as Tone from "tone";
 import { Midi } from "@tonejs/midi";
+import { MdSkipPrevious ,MdSkipNext,MdPlayArrow,MdPause,MdRefresh } from 'react-icons/md';
 
 interface MidiPlayerProps {
   audioUrl: string;
@@ -16,7 +17,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Cleanup on unmount
+
   useEffect(() => {
     return () => {
       synths.forEach((synth) => synth.dispose());
@@ -24,7 +25,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
     };
   }, [synths]);
 
-  // Effect to update progress bar when playing
+
   useEffect(() => {
     if (isPlaying) {
       timerRef.current = setInterval(() => {
@@ -58,7 +59,6 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
         const now = Tone.now();
 
         if (synths.length === 0) {
-          // const response = await fetch(audioUrl);
           const response = await fetch(audioUrl);
           if (!response.ok) {
             throw new Error(`Failed to load MIDI file: ${response.statusText}`);
@@ -123,14 +123,14 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
   const handlePrev = () => {
     setCurrentTime(0);
     if (isPlaying) {
-      handlePlayPause(); // Restart playback
+      handlePlayPause(); 
     }
   };
 
   const handleNext = () => {
     setCurrentTime((prev) => Math.min(prev + 20, duration));
     if (isPlaying) {
-      handlePlayPause(); // Restart playback
+      handlePlayPause(); 
     }
   };
 
@@ -166,7 +166,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
           className="prev-btn"
           style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
-          ⏮
+         <MdSkipPrevious className="h-6 w-6 text-white" />
         </button>
         <button
           onClick={handlePlayPause}
@@ -174,14 +174,20 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
           className="play-btn"
           style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
-          {isLoading ? "..." : isPlaying ? "⏸" : "▶"}
+            {isLoading ? (
+            <MdRefresh className="h-8 w-8 text-white animate-spin" />  
+          ) : isPlaying ? (
+            <MdPause className="h-8 w-8 text-white" />  
+          ) : (
+            <MdPlayArrow className="h-8 w-8 text-white" />  
+          )}
         </button>
         <button
           onClick={handleNext}
           className="next-btn"
           style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
-          ⏭
+         <MdSkipNext className="h-6 w-6 text-white" />
         </button>
       </div>
       {error && <div className="text-xs">{error}</div>}

@@ -151,7 +151,6 @@ def find_similar_images_endpoint():
         query_folder = QUERY_IMAGE_FOLDER
         mapper_folder = MAPPER_FOLDER
 
-        # Pastikan hanya ada satu gambar di query folder
         query_files = os.listdir(query_folder)
         if len(query_files) != 1:
             return (
@@ -163,7 +162,6 @@ def find_similar_images_endpoint():
 
         start_time = time.time()
 
-        # Temukan gambar yang mirip
         similar_images = find_similar_images(
             query_image_path=query_image_path,
             dataset_path=dataset_path,
@@ -176,7 +174,6 @@ def find_similar_images_endpoint():
         for image_name, similarity in similar_images:
             print(f"{image_name}: {similarity:.2%}")
 
-        # Baca file mapper JSON
         mapper_files = [f for f in os.listdir(mapper_folder) if f.endswith(".json")]
         if not mapper_files:
             return jsonify({"error": "No mapper file found"}), 400
@@ -185,16 +182,15 @@ def find_similar_images_endpoint():
         with open(mapper_path, "r") as json_file:
             mapper_data = json.load(json_file)
 
-        # Buat hasil yang sudah dimapping
+      
         mapped_results = []
         for image_name, similarity in similar_images:
-            # Cari informasi audio di image_mapping
+   
             image_info = mapper_data["image_mapping"].get(image_name, {})
 
-            # Dapatkan daftar audio files
+      
             audio_files = image_info.get("audio_files", [])
 
-            # Tambahkan setiap audio file sebagai entri terpisah
             for audio_file in audio_files:
                 audio_info = mapper_data["audio_mapping"].get(audio_file, {})
                 mapped_results.append(
@@ -237,9 +233,9 @@ def handle_upload(request, target_folder, file_type):
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
-    # Handle ZIP files (image or audio)
+
     if file_type == "zip" and file.filename.endswith(".zip"):
-        # Tentukan folder tujuan berdasarkan jenis file
+
         if target_folder == IMAGE_FOLDER:
             folder_name = "images"
         elif target_folder == AUDIO_FOLDER:
@@ -247,44 +243,39 @@ def handle_upload(request, target_folder, file_type):
         else:
             return jsonify({"error": "Invalid folder"}), 400
 
-        # Hapus isi folder jika sudah ada
+
         if os.path.exists(target_folder):
             shutil.rmtree(target_folder)
         os.makedirs(target_folder, exist_ok=True)
 
-        # Menyimpan file ZIP sementara
         temp_zip_path = os.path.join(target_folder, file.filename)
         file.save(temp_zip_path)
 
-        # Ekstrak file ZIP ke folder tujuan
         try:
             with zipfile.ZipFile(temp_zip_path, "r") as zip_ref:
                 zip_ref.extractall(target_folder)
         except zipfile.BadZipFile:
             return jsonify({"error": "Invalid ZIP file"}), 400
 
-        # Menghapus file ZIP setelah ekstraksi
         os.remove(temp_zip_path)
 
         return jsonify({"message": f"ZIP file extracted to {target_folder}"}), 200
 
-    # Handle JSON files (mapper)
     if file_type == "json" and file.filename.endswith(".json"):
-        # Hapus file JSON lama di folder MAPPER_FOLDER
+   
         for filename in os.listdir(MAPPER_FOLDER):
             file_path = os.path.join(MAPPER_FOLDER, filename)
             if filename.endswith(".json"):
                 os.remove(file_path)
 
-        # Simpan file JSON yang baru dengan nama file aslinya
         file_path = os.path.join(MAPPER_FOLDER, file.filename)
         file.save(file_path)
 
-        # Anda dapat membaca dan memproses file JSON di sini jika diperlukan
+        
         try:
             with open(file_path, "r") as json_file:
                 data = json.load(json_file)
-                # Proses data JSON jika diperlukan
+             
                 if 'audio_mapping' in data:
                     music_retriever.set_mapping(data['audio_mapping'])
                     return jsonify(data['audio_mapping'])
@@ -295,28 +286,25 @@ def handle_upload(request, target_folder, file_type):
 
         return jsonify({"message": f"Mapper file saved to {file_path}"}), 200
 
-    # Handle image files (query image)
     if file_type == "image" and file.filename.lower().endswith(
         (".jpg", ".jpeg", ".png")
     ):
-        # Hapus file lama di folder QUERY_IMAGE_FOLDER
+     
         for filename in os.listdir(target_folder):
             file_path = os.path.join(target_folder, filename)
             os.remove(file_path)
 
-        # Simpan file baru
         file_path = os.path.join(target_folder, file.filename)
         file.save(file_path)
         return jsonify({"message": f"Image saved to {file_path}"}), 200
 
-    # Handle audio files (query audio)
     if file_type == "audio" and file.filename.lower().endswith(".mid"):
-        # Hapus file lama di folder QUERY_AUDIO_FOLDER
+
         for filename in os.listdir(target_folder):
             file_path = os.path.join(target_folder, filename)
             os.remove(file_path)
 
-        # Simpan file baru
+ 
         file_path = os.path.join(target_folder, file.filename)
         file.save(file_path)
         test = music_retriever.load_audio_files(AUDIO_FOLDER)

@@ -23,7 +23,7 @@ export default function Card({
       {/* Similarity and Rank */}
       <div className="flex justify-between items-center mb-4">
         <span className="text-xs">
-          Similarity: {(similarity * 100).toFixed(0)}%
+          Similarity: {(similarity * 100).toFixed(2)}%
         </span>
         <div className="bg-[#1DB954] size-4 rounded-full flex items-center justify-center text-zinc-900 text-xs font-semibold">
           {rank}
