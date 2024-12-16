@@ -141,24 +141,24 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
   };
 
   return (
-    <div className="midi-controls flex flex-col items-center space-y-4">
+    <div className="midi-controls">
       <input
         type="range"
         min="0"
         max={duration}
         value={currentTime}
         onChange={(e) => setCurrentTime(Number(e.target.value))}
-        className="progress-bar w-full"
+        className="progress-bar"
         style={{ height: "5px", background: "#ddd", borderRadius: "5px", marginBottom: "10px" }}
       />
-      <div className="time-display text-sm flex justify-between w-full px-4">
+      <div className="time-display">
         <span>{formatTime(currentTime)}</span>
         <span>{formatTime(duration)}</span>
       </div>
-      <div className="playback-control flex items-center justify-center space-x-2">
+      <div className="playback-control">
         <button
           onClick={handlePrev}
-          className="prev-btn text-gray-700"
+          className="prev-btn"
           style={{ border: "none", background: "none", fontSize: "1.5rem" }}
         >
           ⏮
@@ -166,20 +166,20 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
         <button
           onClick={handlePlayPause}
           disabled={isLoading}
-          className="play-btn text-blue-500"
+          className="play-btn"
           style={{ border: "none", background: "none", fontSize: "2rem" }}
         >
           {isLoading ? "..." : isPlaying ? "⏸" : "▶"}
         </button>
         <button
           onClick= {handleNext}
-          className="next-btn text-gray-700"
+          className="next-btn"
           style={{ border: "none", background: "none", fontSize: "1.5rem" }}
         >
           ⏭
         </button>
       </div>
-      {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+      {error && <div className="">{error}</div>}
     </div>
   );
 };

@@ -94,7 +94,7 @@ class MusicRetriever:
                 similarity = self.similarity_calculator.calculate_weighted_similarity(
                     query_features, features
                 )
-                if similarity >=  0.55:
+                if similarity >=  0:
                     info = self.get_file_info(audio_name)
                     similarities[audio_name] = {
                         "similarity": similarity,

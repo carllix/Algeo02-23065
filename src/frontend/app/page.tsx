@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useRef } from "react";
 import MidiPlayerGrid from "./MidiPlayerGrid";
 import { FaMusic } from "react-icons/fa";
@@ -95,7 +96,7 @@ export default function Page() {
         setImageFileName(file.name);
       } else if (type === "mapper") {
         setMapperFileName(file.name);
-        // If mapper contains initial dataset, set it
+
         if (result) {
           const initialData = Object.entries(result).map(([key, value]: [string, any]) => ({
             audioName: key,
@@ -210,7 +211,6 @@ export default function Page() {
               queryImageFileName ? (
                 <>
                   <img
-                    // src={`/test/query_image/${queryImageFileName}`}
                     src={`http://localhost:5000/test/query_image/${queryImageFileName}`}
                     alt="Preview"
                     className="preview-img"
@@ -256,9 +256,6 @@ export default function Page() {
             />
           </button>
         </div>
-        {currentMode === "Music" && (
-          <button className="microphone-btn">🎤 Microphone</button>
-        )}
         <div className="menu">
           <button
             className="menu-btn"
