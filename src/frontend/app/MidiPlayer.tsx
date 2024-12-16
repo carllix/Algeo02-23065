@@ -141,7 +141,7 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
   };
 
   return (
-    <div className="midi-controls">
+    <div className="w-full max-w-[150px] mx-auto text-center">
       <input
         type="range"
         min="0"
@@ -149,17 +149,22 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
         value={currentTime}
         onChange={(e) => setCurrentTime(Number(e.target.value))}
         className="progress-bar"
-        style={{ height: "5px", background: "#ddd", borderRadius: "5px", marginBottom: "10px" }}
+        style={{
+          height: "2px",
+          background: "#ddd",
+          borderRadius: "2px",
+          marginBottom: "0px",
+        }}
       />
-      <div className="time-display">
+      <div className="flex justify-between text-xs">
         <span>{formatTime(currentTime)}</span>
         <span>{formatTime(duration)}</span>
       </div>
-      <div className="playback-control">
+      <div className="flex justify-center items-center gap-0">
         <button
           onClick={handlePrev}
           className="prev-btn"
-          style={{ border: "none", background: "none", fontSize: "1.5rem" }}
+          style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
           ⏮
         </button>
@@ -167,19 +172,19 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
           onClick={handlePlayPause}
           disabled={isLoading}
           className="play-btn"
-          style={{ border: "none", background: "none", fontSize: "2rem" }}
+          style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
           {isLoading ? "..." : isPlaying ? "⏸" : "▶"}
         </button>
         <button
-          onClick= {handleNext}
+          onClick={handleNext}
           className="next-btn"
-          style={{ border: "none", background: "none", fontSize: "1.5rem" }}
+          style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
           ⏭
         </button>
       </div>
-      {error && <div className="">{error}</div>}
+      {error && <div className="text-xs">{error}</div>}
     </div>
   );
 };
