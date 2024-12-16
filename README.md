@@ -24,6 +24,11 @@
    ```bash
    git clone https://github.com/carllix/Algeo02-23065.git
    ```
+2. **Navigate to the src directory of the program by running the following command in the terminal:**
+   ```bash
+   cd Algeo02-23065
+   ```
+
 ### Run Server
 1. **Navigate to the src/backend by running the following command in the terminal:**
    ```bash
@@ -52,7 +57,7 @@
    flask run --debug
    ```
 ### Run Client/Website
-1. **Navigate to the src/frontend by running the following command in the terminal:**
+1. **Open new terminal and navigate to the src/frontend by running the following command in the terminal:**
    ```bash
    cd src/frontend
    ```

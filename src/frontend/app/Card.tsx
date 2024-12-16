@@ -39,7 +39,9 @@ export default function Card({
         />
         <h2 className="text-center text-xs">{albumName}</h2>
         <div>
-          <MidiPlayer audioUrl={`http://localhost:5000/test/audio/${audioName}`}/>
+          <MidiPlayer
+            audioUrl={`http://localhost:5000/test/audio/${audioName}`}
+          />
         </div>
       </div>
 

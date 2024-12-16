@@ -441,9 +441,9 @@ export default function Page() {
                 key={index}
                 title={item.title}
                 albumName={item.albumName}
-                albumImage={`http://localhost:5000/test/images/${item.albumImage}`}
+                albumImage={item.albumImage}
                 similarity={item.similarity ? item.similarity : 0}
-                rank={index + 1}
+                rank={startIndex + index + 1}
                 audioName={item.audioName}
               />
             ))}
