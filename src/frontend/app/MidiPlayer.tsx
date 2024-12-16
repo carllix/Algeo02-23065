@@ -141,45 +141,50 @@ const MidiPlayer: React.FC<MidiPlayerProps> = ({ audioUrl }) => {
   };
 
   return (
-    <div className="midi-controls flex flex-col items-center space-y-4">
+    <div className="w-full max-w-[150px] mx-auto text-center">
       <input
         type="range"
         min="0"
         max={duration}
         value={currentTime}
         onChange={(e) => setCurrentTime(Number(e.target.value))}
-        className="progress-bar w-full"
-        style={{ height: "5px", background: "#ddd", borderRadius: "5px", marginBottom: "10px" }}
+        className="progress-bar"
+        style={{
+          height: "2px",
+          background: "#ddd",
+          borderRadius: "2px",
+          marginBottom: "0px",
+        }}
       />
-      <div className="time-display text-sm flex justify-between w-full px-4">
+      <div className="flex justify-between text-xs">
         <span>{formatTime(currentTime)}</span>
         <span>{formatTime(duration)}</span>
       </div>
-      <div className="playback-control flex items-center justify-center space-x-2">
+      <div className="flex justify-center items-center gap-0">
         <button
           onClick={handlePrev}
-          className="prev-btn text-gray-700"
-          style={{ border: "none", background: "none", fontSize: "1.5rem" }}
+          className="prev-btn"
+          style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
           ⏮
         </button>
         <button
           onClick={handlePlayPause}
           disabled={isLoading}
-          className="play-btn text-blue-500"
-          style={{ border: "none", background: "none", fontSize: "2rem" }}
+          className="play-btn"
+          style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
           {isLoading ? "..." : isPlaying ? "⏸" : "▶"}
         </button>
         <button
-          onClick= {handleNext}
-          className="next-btn text-gray-700"
-          style={{ border: "none", background: "none", fontSize: "1.5rem" }}
+          onClick={handleNext}
+          className="next-btn"
+          style={{ border: "none", background: "none", fontSize: "0.75rem" }}
         >
           ⏭
         </button>
       </div>
-      {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+      {error && <div className="text-xs">{error}</div>}
     </div>
   );
 };
