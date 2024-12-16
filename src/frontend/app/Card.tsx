@@ -3,6 +3,7 @@ import MidiPlayer from "./MidiPlayer";
 
 interface CardProps {
   title: string;
+  audioName:string;
   albumName: string;
   albumImage: string;
   similarity: number;
@@ -15,6 +16,7 @@ export default function Card({
   albumImage,
   similarity,
   rank,
+  audioName,
 }: CardProps) {
   return (
     <div className="bg-zinc-900 rounded-md p-4 text-white flex flex-col transform transition-all duration-300 hover:shadow-lg hover:bg-zinc-800">
@@ -37,7 +39,7 @@ export default function Card({
         />
         <h2 className="text-center text-xs">{albumName}</h2>
         <div>
-          <MidiPlayer audioUrl="/test/query_audio/audio_1.mid" />
+          <MidiPlayer audioUrl={`http://localhost:5000/test/audio/${audioName}`}/>
         </div>
       </div>
 

@@ -2,142 +2,23 @@
 
 import React, { useState, useRef } from "react";
 import Card from "./Card";
-// import MidiPlayerGrid from "./MidiPlayerGrid";
-import { FaMusic, FaVolumeUp } from "react-icons/fa";
+import { FaMusic } from "react-icons/fa";
 
-const MOCKUP_DATA = [
-  {
-    title: "Bohemian Rhapsody",
-    albumName: "A Night at the Opera",
-    albumImage: "/album1.jpg",
-    similarity: 0.95,
-  },
-  {
-    title: "Stairway to Heaven",
-    albumName: "Led Zeppelin IV",
-    albumImage: "/album2.jpg",
-    similarity: 0.88,
-  },
-  {
-    title: "Imagine",
-    albumName: "Imagine",
-    albumImage: "/album3.jpg",
-    similarity: 0.82,
-  },
-  {
-    title: "Billie Jean",
-    albumName: "Thriller",
-    albumImage: "/album4.jpg",
-    similarity: 0.9,
-  },
-  {
-    title: "Like a Rolling Stone",
-    albumName: "Highway 61 Revisited",
-    albumImage: "/album5.jpg",
-    similarity: 0.85,
-  },
-  {
-    title: "Smells Like Teen Spirit",
-    albumName: "Nevermind",
-    albumImage: "/album6.jpg",
-    similarity: 0.79,
-  },
-  {
-    title: "Sweet Child O' Mine",
-    albumName: "Appetite for Destruction",
-    albumImage: "/album7.jpg",
-    similarity: 0.87,
-  },
-  {
-    title: "Losing My Religion",
-    albumName: "Out of Time",
-    albumImage: "/album8.jpg",
-    similarity: 0.8,
-  },
-  {
-    title: "Purple Rain",
-    albumName: "Purple Rain",
-    albumImage: "/album9.jpg",
-    similarity: 0.92,
-  },
-  {
-    title: "Hotel California",
-    albumName: "Hotel California",
-    albumImage: "/album10.jpg",
-    similarity: 0.89,
-  },
-  {
-    title: "Wonderwall",
-    albumName: "Morning Glory",
-    albumImage: "/album11.jpg",
-    similarity: 0.75,
-  },
-  {
-    title: "Riders on the Storm",
-    albumName: "L.A. Woman",
-    albumImage: "/album12.jpg",
-    similarity: 0.83,
-  },
-  {
-    title: "Zombie",
-    albumName: "No Need to Argue",
-    albumImage: "/album13.jpg",
-    similarity: 0.77,
-  },
-  {
-    title: "Sweet Dreams",
-    albumName: "Sweet Dreams",
-    albumImage: "/album14.jpg",
-    similarity: 0.86,
-  },
-  {
-    title: "Creep",
-    albumName: "Pablo Honey",
-    albumImage: "/album15.jpg",
-    similarity: 0.81,
-  },
-  {
-    title: "Black or White",
-    albumName: "Dangerous",
-    albumImage: "/album16.jpg",
-    similarity: 0.93,
-  },
-  {
-    title: "Born to Run",
-    albumName: "Born to Run",
-    albumImage: "/album17.jpg",
-    similarity: 0.84,
-  },
-  {
-    title: "Sweet Home Alabama",
-    albumName: "Second Helping",
-    albumImage: "/album18.jpg",
-    similarity: 0.78,
-  },
-  {
-    title: "Californication",
-    albumName: "Californication",
-    albumImage: "/album19.jpg",
-    similarity: 0.91,
-  },
-  {
-    title: "With or Without You",
-    albumName: "The Joshua Tree",
-    albumImage: "/album20.jpg",
-    similarity: 0.86,
-  },
-];
+interface SongData {
+  title: string;
+  albumImage: string;
+  albumName: string;
+  similarity?: number;
+  audioName: string;
+}
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentMode, setCurrentMode] = useState<"Album" | "Music">("Album");
+  const [timeexecution, setTimeExecution] = useState<number | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const [datasets] = useState<any[]>(MOCKUP_DATA);
-
-  const itemsPerPage = 8;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const itemsToDisplay = datasets.slice(startIndex, startIndex + itemsPerPage);
-  const totalPages = Math.ceil(datasets.length / itemsPerPage);
+  const [datasets, setDatasets] = useState<SongData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [audioFileName, setAudioFileName] = useState<string>("-");
   const [imageFileName, setImageFileName] = useState<string>("-");
@@ -148,9 +29,19 @@ export default function Page() {
   const [queryAudioFileName, setQueryAudioFileName] = useState<string | null>(
     null
   );
-  // const [datasets, setDatasets] = useState<any[]>([]);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SongData[]>([]);
   const [isDatasetLoaded, setIsDatasetLoaded] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const displayItems: SongData[] =
+    searchResults.length > 0 ? searchResults : datasets;
+  const itemsPerPage = 8;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const itemsToDisplay = displayItems.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const totalPages = Math.ceil(displayItems.length / itemsPerPage);
 
   const checkDatasetStatus = () => {
     const isComplete =
@@ -163,10 +54,7 @@ export default function Page() {
   };
 
   const handleNextPage = () => {
-    const maxPage = Math.ceil(
-      (searchResults.length > 0 ? searchResults.length : datasets.length) / 10
-    );
-    if (currentPage < maxPage) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   const handleTabChange = (mode: "Album" | "Music") => {
@@ -175,10 +63,43 @@ export default function Page() {
     setSearchResults([]);
   };
 
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const handleReset = async() => {
+    try {
+      setIsLoading(true); // Tambahkan loading state
+      const response = await fetch(
+        `http://localhost:5000/reset`,
+        {
+          method: "POST",
+        }
+      );
+      const result = await response.json();
+      
+      // Reset semua state ke nilai awal
+      setSearchResults([]);
+      setQueryImageFileName(null);
+      setQueryAudioFileName(null);
+      setCurrentPage(1);
+      setErrorMessage("");
+      setTimeExecution(null); // Reset execution time
+      setMessage(null); // Reset message
+      setDatasets([]); // Reset datasets
+      setAudioFileName("-");  // Reset file names
+      setImageFileName("-");
+      setMapperFileName("-");
+      setIsDatasetLoaded(false);
+  
+      // Tampilkan pesan sukses
+      setMessage(result.message);
+    } catch (error) {
+      setErrorMessage("Error resetting data");
+    } finally {
+      setIsLoading(false); // Matikan loading state
+    }
+  };
+
   const handleUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    type: string
+    type: "audio" | "image" | "mapper" | "query_audio" | "query_image"
   ) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
@@ -212,12 +133,12 @@ export default function Page() {
 
     const file = e.target.files[0];
     setErrorMessage("");
-    console.log(`${type} file selected:`, file);
-
-    const formData = new FormData();
-    formData.append("file", file);
+    setIsLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append("file", file);
+
       const response = await fetch(`http://localhost:5000/upload/${type}`, {
         method: "POST",
         body: formData,
@@ -231,9 +152,8 @@ export default function Page() {
         setImageFileName(file.name);
       } else if (type === "mapper") {
         setMapperFileName(file.name);
-
         if (result) {
-          const initialData = Object.entries(result).map(
+          const initialData: SongData[] = Object.entries(result).map(
             ([key, value]: [string, any]) => ({
               audioName: key,
               title: value.song_title,
@@ -252,6 +172,77 @@ export default function Page() {
       checkDatasetStatus();
     } catch (error) {
       setMessage("Error uploading file");
+      setErrorMessage("Upload failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFindSimilarImage = async () => {
+    if (!queryImageFileName) {
+      setErrorMessage("Please upload a query image first");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/find_similar_images`,
+        {
+          method: "POST",
+        }
+      );
+      const result = await response.json();
+      const formattedResults: SongData[] = result.similar_images.map(
+        (item: any) => ({
+          title: item.song_title,
+          albumImage: item.image_name,
+          albumName: item.album_name,
+          similarity: item.similarity,
+          audioName: item.audio_name,
+        })
+      );
+      setTimeExecution(result.execution_time_ms);
+      setSearchResults(formattedResults);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Error searching similar images");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFindSimilarMusic = async () => {
+    if (!queryAudioFileName) {
+      setErrorMessage("Please upload a query audio first");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/find_similar_audios`,
+        {
+          method: "POST",
+        }
+      );
+      const result = await response.json();
+      const formattedResults: SongData[] = result.similar_audios.map(
+        (item: any) => ({
+          audioName: item.audio_name,
+          title: item.song_title,
+          albumImage: item.image_name,
+          albumName: item.album_name,
+          similarity: item.similarity,
+        })
+      );
+      setTimeExecution(result.execution_time_ms);
+      setSearchResults(formattedResults);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Error searching similar music");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -275,66 +266,6 @@ export default function Page() {
     }
   };
 
-  const handleFindSimilarImage = async () => {
-    if (!queryImageFileName) {
-      setErrorMessage("Please upload a query image first");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/find_similar_images`,
-        {
-          method: "POST",
-        }
-      );
-      const result = await response.json();
-      const formattedResults = result.similar_images.map((item: any) => ({
-        audioName: item.audio_file,
-        title: item.song_title,
-        albumImage: item.image_name,
-        albumName: item.album_name,
-        similarity: item.similarity,
-      }));
-      console.log(formattedResults);
-      setSearchResults(formattedResults);
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Error searching similar images");
-    }
-  };
-
-  const handleFindSimilarMusic = async () => {
-    if (!queryAudioFileName) {
-      setErrorMessage("Please upload a query audio first");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/find_similar_audios`,
-        {
-          method: "POST",
-        }
-      );
-      const result = await response.json();
-      const formattedResults = result.similar_audios.map((item: any) => ({
-        audioName: item.audio_name,
-        title: item.song_title,
-        albumImage: item.image_name,
-        albumName: item.album_name,
-        similarity: item.similarity,
-      }));
-      console.log(formattedResults);
-      setSearchResults(formattedResults);
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Error searching similar music");
-    }
-  };
-
-  // const displayItems = searchResults.length > 0 ? searchResults : datasets;
-
   return (
     <div className="h-screen flex">
       {/* Side Bar */}
@@ -343,18 +274,16 @@ export default function Page() {
           <h1 className="text-2xl font-bold text-center text-slate-200 mb-5">
             Sound The Sheep
           </h1>
-          {/* <FaVolumeUp className="text-3xl text-[#FFFFFF]" /> */}
         </div>
 
         {/* Upload Query */}
         <div className="flex flex-col justify-center items-center gap-4">
-          <div className="bg-slate-200 w-full h-36 rounded-md p-3 relative flex flex-col items-center justify-center">
+          <div className="bg-zinc-300 w-full h-36 rounded-md p-3 relative flex flex-col items-center justify-center">
             {currentMode === "Album" ? (
               queryImageFileName ? (
                 <>
                   <img
                     src={`http://localhost:5000/test/query_image/${queryImageFileName}`}
-                    // src="/test/query_image/0ecuaq.jpg"
                     alt="Preview"
                     className="max-w-44 h-24 object-cover rounded-md"
                   />
@@ -372,6 +301,7 @@ export default function Page() {
               <h1>Upload Your MIDI Audio</h1>
             )}
           </div>
+
           {/* Upload Button */}
           <button
             className="max-w-max bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)]"
@@ -403,7 +333,7 @@ export default function Page() {
         {/* Upload dataset */}
         <div className="mt-7 flex flex-col justify-center items-center gap-4">
           <button
-            className="w-full bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font- transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)]"
+            className="w-full bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)]"
             onClick={() => handleButtonClick("audio")}
           >
             Audios
@@ -442,10 +372,10 @@ export default function Page() {
           />
         </div>
 
-        {/* Pesan Kesalahan */}
+        {/* Error Message */}
         <div
           className={`flex flex-col justify-center p-3 mt-8 h-[75px] rounded-lg text-red-600 text-center ${
-            errorMessage ? "border-2 border-slate-50" : "border-0"
+            errorMessage ? "border-2 border-red-600" : "border-0"
           }`}
         >
           {errorMessage}
@@ -460,7 +390,7 @@ export default function Page() {
       </div>
 
       <div className="w-3/4 bg-zinc-800 flex flex-col gap-10 px-12 py-8">
-        {/* Button */}
+        {/* Buttons */}
         <div className="flex justify-between">
           <div className="flex gap-7 text-sm font-semibold">
             <button
@@ -473,10 +403,18 @@ export default function Page() {
             >
               Search
             </button>
-            <button className="w-full bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)]">
+            <button
+              onClick={handleReset}
+              className="w-full bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)]"
+            >
               Reset
             </button>
           </div>
+          {timeexecution && (
+            <div className="bg-[#1DB954] flex items-center px-3 py-1 rounded-lg">
+              <h1>Execution Time: {timeexecution.toFixed(4)} ms</h1>
+            </div>
+          )}
           <div className="flex gap-7 text-sm font-semibold">
             <button
               className="w-full bg-[#1DB954] text-black border-none py-1 px-3 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)]"
@@ -492,36 +430,39 @@ export default function Page() {
             </button>
           </div>
         </div>
-
-        {/* Result */}
-        <div className="grid grid-cols-4 gap-x-8 gap-y-4">
-          {itemsToDisplay.map((item, index) => (
-            <Card
-              key={index}
-              title={item.title}
-              albumName={item.albumName}
-              albumImage={item.albumImage}
-              similarity={item.similarity}
-              rank={index + 1}
-            />
-          ))}
-        </div>
-
-        {/* Pagination */}
+        {isLoading ? (
+          <div className="text-white text-center">Loading...</div>
+        ) : itemsToDisplay.length === 0 ? (
+          <div className="text-white text-center">No results found</div>
+        ) : (
+          <div className="grid grid-cols-4 gap-x-8 gap-y-4">
+            {itemsToDisplay.map((item, index) => (
+              <Card
+                key={index}
+                title={item.title}
+                albumName={item.albumName}
+                albumImage={`http://localhost:5000/test/images/${item.albumImage}`}
+                similarity={item.similarity ? item.similarity : 0}
+                rank={index + 1}
+                audioName={item.audioName}
+              />
+            ))}
+          </div>
+        )}
         <div className="flex justify-center items-center gap-4 mt-0 text-sm">
           <button
             onClick={handlePrevPage}
-            disabled={currentPage === 1}
+            disabled={currentPage === 1 || itemsToDisplay.length === 0}
             className="bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
           <span className="text-white">
-            Page {currentPage} of {totalPages}
+            Page {itemsToDisplay.length === 0 ? 0 : currentPage} of {totalPages}
           </span>
           <button
             onClick={handleNextPage}
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || itemsToDisplay.length === 0}
             className="bg-[#1DB954] text-black border-none py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-300 hover:bg-[#1ed760] hover:shadow-[0_4px_15px_rgba(29,185,84,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next

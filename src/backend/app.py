@@ -84,7 +84,26 @@ def not_found_error(error):
 def internal_error(error):
     return jsonify({"error": "Internal server error"}), 500
 
+@app.route("/reset", methods=["POST"])
+def reset_datasets():
+    try:
+        
+        folders_to_clear = [
+            IMAGE_FOLDER,
+            AUDIO_FOLDER,
+            MAPPER_FOLDER,
+            QUERY_IMAGE_FOLDER,
+            QUERY_AUDIO_FOLDER,
+        ]
 
+        for folder in folders_to_clear:
+            if os.path.exists(folder):
+                shutil.rmtree(folder)
+            os.makedirs(folder, exist_ok=True)
+
+        return jsonify({"message": "All datasets and queries have been reset."}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/find_similar_audios", methods=["POST"])
@@ -150,7 +169,7 @@ def find_similar_images_endpoint():
             dataset_path=dataset_path,
             components_count=50,
             max_results=None,
-            threshold=0,
+            threshold=0.55,
         )
         total_results = len(similar_images)
 
