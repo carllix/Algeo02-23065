@@ -210,7 +210,8 @@ export default function Page() {
               queryImageFileName ? (
                 <>
                   <img
-                    src={`/test/query_image/${queryImageFileName}`}
+                    // src={`/test/query_image/${queryImageFileName}`}
+                    src={`http://localhost:5000/test/query_image/${queryImageFileName}`}
                     alt="Preview"
                     className="preview-img"
                   />
